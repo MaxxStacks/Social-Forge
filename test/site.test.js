@@ -16,6 +16,10 @@ test('public preview routes and disabled checkout',async()=>{
   const retailStyle=await fetch(base+'/retail-v2.css');assert.equal(retailStyle.status,200);
   const retailJs=await fetch(base+'/retail-v2.js');assert.equal(retailJs.status,200);
 
+  for(const asset of ['/flat-ui.css','/mega-menu.js','/icons/instagram.svg','/icons/tiktok.svg','/icons/linkedin.svg']){
+    const result=await fetch(base+asset);assert.equal(result.status,200,asset+' served');
+  }
+  const icon=await fetch(base+'/icons/nonexistent.svg');assert.equal(icon.status,404);
   const script=await fetch(base+'/app.js');assert.equal(script.status,200);
   const catalog=await fetch(base+'/api/catalog?platform=instagram');const data=await catalog.json();assert.equal(catalog.status,200);assert.equal(data.platforms.length,16);assert.equal(data.sync.mode,'supplier-api-read-only');
   const missingService=await fetch(base+'/services/unknown');assert.equal(missingService.status,404);
