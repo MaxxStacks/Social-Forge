@@ -3,11 +3,13 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {platforms} from './catalog.js';
+import {getSnapshot} from './supplier-catalog.js';
+import {analyzeCatalog} from './quality.js';
 import {publicCatalog,publicService} from './supplier-catalog.js';
 import {demoServices,demoServiceById,demoQuote} from './demo-catalog.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js']]);
+const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
 const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
@@ -29,6 +31,14 @@ export async function handle(req,res){
    if(!/^[a-z0-9-]{1,90}$/.test(id))return json(res,404,{error:'Service not found'});
    const service=id.startsWith('demo-')?demoServiceById(id):await publicService(id);
    return service?json(res,200,{service}):json(res,404,{error:'Service not found'});
+ }
+ if(req.method==='GET'&&pathname==='/api/operations/readiness'){
+   const snapshot=await getSnapshot();
+   const report=analyzeCatalog(snapshot);
+   // Only aggregated counts and public provider names — no raw service or wholesale data.
+   delete report.sample;
+   report.providerStatus=snapshot.providers.map(p=>({id:p.id,name:p.name,connected:p.connected,configured:p.configured}));
+   return json(res,200,report);
  }
  if(req.method==='GET'&&pathname==='/api/demo/catalog'){
   return json(res,200,{platforms,services:demoServices,mode:'simulated',checkoutEnabled:false,disclaimer:'Synthetic demonstration inventory. No upstream API, payment or fulfillment.'});
@@ -58,8 +68,8 @@ export async function handle(req,res){
  const body=await readFile(path.join(publicRoot,'service.html'));
  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
 }
- if(req.method==='GET' && ['/cart','/discover'].includes(pathname)){
-  const pageName=pathname==='/cart'?'cart.html':'discover.html';
+ if(req.method==='GET' && ['/cart','/discover','/operations'].includes(pathname)){
+  const pageName=pathname==='/cart'?'cart.html':pathname==='/operations'?'operations.html':'discover.html';
   const body=await readFile(path.join(publicRoot,pageName));
   res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});
   return res.end(body);
