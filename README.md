@@ -5,8 +5,8 @@ Premium multi-platform digital services **preview**. Independent repository for 
 ## Features in this deployment
 - Redesigned responsive editorial storefront
 - 16 social platform categories
-- 61 sample digital-product entries
-- Search, platform filters, sorting, saved products and product detail dialogs
+- 36 specifically scoped preview service entries
+- Search, platform filters, sorting, saved products and dedicated `/services/:id` detail pages
 - Read-only product catalog API and healthcheck
 - Railway-ready Docker deployment, automated CI tests
 
@@ -31,3 +31,7 @@ Connect the `main` branch to Railway, which builds `Dockerfile`. Healthcheck is 
 
 ## Next production milestones
 Payment processor approval, vetted legitimate products and suppliers, customer identity, PostgreSQL and order ledger, webhook verification and idempotency, background fulfillment queues, refunds, security hardening and admin controls.
+
+## Product scope and clarity
+
+36 preview concepts across 16 platforms are listed with quantities, customer inputs, output file types, and indicative CAD prices. `/services/:id` and `/api/services/:id` expose each product's details. The four storefront groupings are design, video, content, and profile/audit. **No products are currently purchasable**. The Graming-style engagement catalog (followers, likes, views, shares, comments) has not been implemented or supplier-vetted. Do not represent content toolkits as artificial-engagement fulfillment.
