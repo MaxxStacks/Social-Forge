@@ -16,8 +16,8 @@ test('public preview routes and disabled checkout',async()=>{
   const script=await fetch(base+'/app.js');assert.equal(script.status,200);
   const catalog=await fetch(base+'/api/catalog?platform=instagram');const data=await catalog.json();assert.equal(catalog.status,200);assert.equal(data.platforms.length,16);assert.equal(data.sync.mode,'supplier-api-read-only');
   const missingService=await fetch(base+'/services/unknown');assert.equal(missingService.status,404);
-  for(const route of ['/explore','/tools','/help']){const page=await fetch(base+route);assert.equal(page.status,200);assert.match(await page.text(),/SocialForge/i)}
-  for(const asset of ['/pages.css','/explore.js','/tools.js']){const resource=await fetch(base+asset);assert.equal(resource.status,200)}
+  for(const route of ['/explore','/tools','/help','/discover','/cart']){const page=await fetch(base+route);assert.equal(page.status,200);assert.match(await page.text(),/SocialForge/i)}
+  for(const asset of ['/pages.css','/explore.js','/tools.js','/experience.css','/experience-interactive.css','/cart-store.js','/experience.js','/discover.js','/demo-cart.js']){const resource=await fetch(base+asset);assert.equal(resource.status,200)}
   const demo=await fetch(base+'/api/demo/catalog');assert.equal(demo.status,200);const demoData=await demo.json();assert.equal(demoData.services.length,48);assert.equal(demoData.checkoutEnabled,false);
   const quote=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:1000})});assert.equal(quote.status,200);assert.equal((await quote.json()).quote.checkoutEnabled,false);
   const invalid=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:-2})});assert.equal(invalid.status,422);
