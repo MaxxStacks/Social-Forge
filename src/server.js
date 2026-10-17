@@ -6,7 +6,8 @@ import {platforms} from './catalog.js';
 import {getSnapshot} from './supplier-catalog.js';
 import {analyzeCatalog} from './quality.js';
 import {publicCatalog,publicService} from './supplier-catalog.js';
-import {demoServices,demoServiceById,demoQuote} from './demo-catalog.js';
+import {demoServices,demoServiceById} from './demo-catalog.js';
+import {demoPrice} from './demo-pricing.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
 const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/retail.css','retail.css'],['/flat-ui.css','flat-ui.css'],['/mega-menu.js','mega-menu.js'],['/retail.js','retail.js'],['/shop.css','shop.css'],['/shop.js','shop.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
@@ -56,7 +57,7 @@ export async function handle(req,res){
   }
   let data;try{data=JSON.parse(raw)}catch{return json(res,400,{error:'Invalid JSON'})}
   if(!data || typeof data.serviceId!=='string')return json(res,400,{error:'Missing serviceId'});
-  const answer=demoQuote(data.serviceId,data.quantity);
+  const answer=demoPrice(data.serviceId,data.quantity,data.code);
   return answer.error?json(res,answer.status,{error:answer.error}):json(res,200,answer);
  }
  if(pathname==='/api/orders' || pathname.startsWith('/api/orders/')){
