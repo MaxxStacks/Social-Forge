@@ -21,6 +21,15 @@ try{
  expect(await page.locator('.platform-tile').count()===16,'All 16 platforms visible');
  expect(await page.locator('.service-tile').count()===3,'Three prominent shopping categories shown');
  expect(await page.locator('.hero-copy h1').isVisible(),'Retail hero headline visible');
+ await page.locator('#platformMenuButton').click();
+ expect(await page.locator('.mega-network').count()===16,'Mega menu exposes all 16 real-icon platforms');
+ expect(await page.locator('.mega-network img').count()===16,'Mega menu uses 16 brand image assets');
+ await page.keyboard.press('Escape');
+ expect(await page.locator('#platformMenuButton').getAttribute('aria-expanded')==='false','Mega menu closes with Escape');
+ const flatHero=await page.evaluate(()=>getComputedStyle(document.querySelector('.retail-hero')).backgroundImage);
+ expect(flatHero==='none','Retail homepage hero uses no gradient');
+ expect(await page.locator('#retailQuickShop').isVisible(),'Product-first quick shop loads');
+
  await page.screenshot({path:'qa/home-desktop.png',fullPage:true});
  await page.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
  await page.locator('.package-tile').first().waitFor();
@@ -51,6 +60,156 @@ try{
  await page.locator('.sf-cart-item-right button').click();
  await page.locator('.sf-cart-empty').waitFor();
  expect(await page.locator('.sf-cart-item').count()===0,'Cart remove action works');
+
+ await page.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
+ await page.locator('.package-tile').first().waitFor();
+ await page.locator('#customQuantity').fill('5000');
+ await page.locator('#promoCode').fill('WELCOME10');
+ await page.locator('#applyPromo').click();
+ await page.waitForFunction(()=>document.querySelector('#summaryCoupon')?.textContent?.includes('
+ await page.locator('#content').waitFor({state:'visible'});
+ expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
+ expect((await page.locator('#description').textContent()).includes('illustrative preview') && (await page.locator('#format2').textContent()).includes('SIMULATED'),'Demo clearly labeled in both description and fulfillment status');
+ const live=await fetch(origin+'/api/catalog');
+ const liveData=await live.json();
+ expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
+ const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
+ await mobile.goto(origin,{waitUntil:'networkidle'});
+ await mobile.locator('.service-tile').first().waitFor();
+ const overflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(overflow.scroll<=overflow.viewport+2,'Homepage fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/home-mobile.png',fullPage:true});
+ await mobile.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
+ await mobile.locator('.package-tile').first().waitFor();
+ const shopOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(shopOverflow.scroll<=shopOverflow.viewport+2,'Follower product fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/followers-product-mobile.png',fullPage:true});
+
+ await mobile.goto(origin+'/discover',{waitUntil:'networkidle'});
+ await mobile.locator('.sf-match-card').first().waitFor();
+ const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
+ await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
+ for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.sf-header').isVisible(),route+' displays the unified header')}
+ await page.goto(origin+'/tools',{waitUntil:'networkidle'});
+ await page.locator('#utmDestination').fill('https://example.com/offer');
+ await page.locator('#utmSource').fill('instagram');
+ await page.locator('#utmMedium').fill('social');
+ await page.locator('#utmCampaign').fill('launch');
+ await page.locator('#utmBuild').click();
+ expect((await page.locator('#utmOutput').textContent()).includes('utm_campaign=launch'),'Free UTM builder works');
+ await page.locator('#hashInput').fill('Marketing, #Marketing, social media');
+ await page.locator('#hashClean').click();
+ expect((await page.locator('#hashOutput').textContent()).includes('#marketing'),'Hashtag cleaner works');
+ expect(issues.length===0,'No JavaScript runtime errors');
+ await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow,shopMobile:shopOverflow},null,2));
+ console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));
+}catch(e){await writeFile('qa/results.json',JSON.stringify({failed:String(e),checks,issues,serverOutput},null,2));throw e}
+finally{if(browser)await browser.close();server.kill('SIGTERM')}
+));
+ expect((await page.locator('#summaryVolume').textContent()).includes('10%'),'Volume discount updates for 5000 sample units');
+ await page.locator('#addDemoCart').click();
+ await page.goto(origin+'/cart',{waitUntil:'networkidle'});
+ await page.locator('.sf-cart-item').first().waitFor();
+ expect((await page.locator('#cartVolumeSavings').textContent()).includes('
+ await page.locator('#content').waitFor({state:'visible'});
+ expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
+ expect((await page.locator('#description').textContent()).includes('illustrative preview') && (await page.locator('#format2').textContent()).includes('SIMULATED'),'Demo clearly labeled in both description and fulfillment status');
+ const live=await fetch(origin+'/api/catalog');
+ const liveData=await live.json();
+ expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
+ const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
+ await mobile.goto(origin,{waitUntil:'networkidle'});
+ await mobile.locator('.service-tile').first().waitFor();
+ const overflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(overflow.scroll<=overflow.viewport+2,'Homepage fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/home-mobile.png',fullPage:true});
+ await mobile.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
+ await mobile.locator('.package-tile').first().waitFor();
+ const shopOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(shopOverflow.scroll<=shopOverflow.viewport+2,'Follower product fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/followers-product-mobile.png',fullPage:true});
+
+ await mobile.goto(origin+'/discover',{waitUntil:'networkidle'});
+ await mobile.locator('.sf-match-card').first().waitFor();
+ const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
+ await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
+ for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.sf-header').isVisible(),route+' displays the unified header')}
+ await page.goto(origin+'/tools',{waitUntil:'networkidle'});
+ await page.locator('#utmDestination').fill('https://example.com/offer');
+ await page.locator('#utmSource').fill('instagram');
+ await page.locator('#utmMedium').fill('social');
+ await page.locator('#utmCampaign').fill('launch');
+ await page.locator('#utmBuild').click();
+ expect((await page.locator('#utmOutput').textContent()).includes('utm_campaign=launch'),'Free UTM builder works');
+ await page.locator('#hashInput').fill('Marketing, #Marketing, social media');
+ await page.locator('#hashClean').click();
+ expect((await page.locator('#hashOutput').textContent()).includes('#marketing'),'Hashtag cleaner works');
+ expect(issues.length===0,'No JavaScript runtime errors');
+ await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow,shopMobile:shopOverflow},null,2));
+ console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));
+}catch(e){await writeFile('qa/results.json',JSON.stringify({failed:String(e),checks,issues,serverOutput},null,2));throw e}
+finally{if(browser)await browser.close();server.kill('SIGTERM')}
+),'Cart displays volume savings');
+ await page.locator('#cartPromoCode').fill('WELCOME10');
+ await page.locator('#cartApplyPromo').click();
+ await page.waitForFunction(()=>document.querySelector('#cartCouponSavings')?.textContent?.includes('
+ await page.locator('#content').waitFor({state:'visible'});
+ expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
+ expect((await page.locator('#description').textContent()).includes('illustrative preview') && (await page.locator('#format2').textContent()).includes('SIMULATED'),'Demo clearly labeled in both description and fulfillment status');
+ const live=await fetch(origin+'/api/catalog');
+ const liveData=await live.json();
+ expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
+ const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
+ await mobile.goto(origin,{waitUntil:'networkidle'});
+ await mobile.locator('.service-tile').first().waitFor();
+ const overflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(overflow.scroll<=overflow.viewport+2,'Homepage fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/home-mobile.png',fullPage:true});
+ await mobile.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
+ await mobile.locator('.package-tile').first().waitFor();
+ const shopOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(shopOverflow.scroll<=shopOverflow.viewport+2,'Follower product fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/followers-product-mobile.png',fullPage:true});
+
+ await mobile.goto(origin+'/discover',{waitUntil:'networkidle'});
+ await mobile.locator('.sf-match-card').first().waitFor();
+ const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
+ await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
+ for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.sf-header').isVisible(),route+' displays the unified header')}
+ await page.goto(origin+'/tools',{waitUntil:'networkidle'});
+ await page.locator('#utmDestination').fill('https://example.com/offer');
+ await page.locator('#utmSource').fill('instagram');
+ await page.locator('#utmMedium').fill('social');
+ await page.locator('#utmCampaign').fill('launch');
+ await page.locator('#utmBuild').click();
+ expect((await page.locator('#utmOutput').textContent()).includes('utm_campaign=launch'),'Free UTM builder works');
+ await page.locator('#hashInput').fill('Marketing, #Marketing, social media');
+ await page.locator('#hashClean').click();
+ expect((await page.locator('#hashOutput').textContent()).includes('#marketing'),'Hashtag cleaner works');
+ expect(issues.length===0,'No JavaScript runtime errors');
+ await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow,shopMobile:shopOverflow},null,2));
+ console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));
+}catch(e){await writeFile('qa/results.json',JSON.stringify({failed:String(e),checks,issues,serverOutput},null,2));throw e}
+finally{if(browser)await browser.close();server.kill('SIGTERM')}
+));
+ expect(await page.locator('#createDemoOrder').isEnabled(),'Mock checkout saves only example orders');
+ await page.locator('#createDemoOrder').click();
+ await page.waitForURL(/\/track\?order=SF-DEMO-/);
+ expect((await page.locator('#trackStatus').textContent()).includes('not paid'),'Local mock order is marked unpaid');
+ await page.goto(origin+'/rewards',{waitUntil:'networkidle'});
+ expect(await page.locator('.program-metric').count()>=3,'Rewards dashboard renders sample metrics');
+ await page.goto(origin+'/affiliates',{waitUntil:'networkidle'});
+ expect(await page.locator('#affTotal').isVisible(),'Affiliate earnings calculator works');
+ await page.goto(origin+'/support',{waitUntil:'networkidle'});
+ await page.locator('#chatText').fill('What discount codes work?');
+ await page.locator('#chatForm button').click();
+ expect((await page.locator('#chatLog').textContent()).includes('WELCOME10'),'Scripted support responds to discount question');
  await page.goto(origin+'/services/demo-instagram-views',{waitUntil:'networkidle'});
  await page.locator('#content').waitFor({state:'visible'});
  expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
