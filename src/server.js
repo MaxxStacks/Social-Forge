@@ -4,9 +4,10 @@ import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {platforms} from './catalog.js';
 import {publicCatalog,publicService} from './supplier-catalog.js';
+import {demoServices,demoServiceById,demoQuote} from './demo-catalog.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js']]);
+const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js']]);
 const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
@@ -26,18 +27,43 @@ export async function handle(req,res){
  if(req.method==='GET'&&pathname.startsWith('/api/services/')){
    const id=pathname.slice('/api/services/'.length);
    if(!/^[a-z0-9-]{1,90}$/.test(id))return json(res,404,{error:'Service not found'});
-   const service=await publicService(id);
+   const service=id.startsWith('demo-')?demoServiceById(id):await publicService(id);
    return service?json(res,200,{service}):json(res,404,{error:'Service not found'});
+ }
+ if(req.method==='GET'&&pathname==='/api/demo/catalog'){
+  return json(res,200,{platforms,services:demoServices,mode:'simulated',checkoutEnabled:false,disclaimer:'Synthetic demonstration inventory. No upstream API, payment or fulfillment.'});
+ }
+ if(req.method==='GET'&&pathname.startsWith('/api/demo/services/')){
+  const id=pathname.slice('/api/demo/services/'.length);
+  const sample=demoServiceById(id);
+  return sample?json(res,200,{service:sample}):json(res,404,{error:'Demo service not found'});
+ }
+ if(req.method==='POST'&&pathname==='/api/demo/quote'){
+  let raw='';
+  for await(const chunk of req){
+   raw+=chunk.toString('utf8');
+   if(raw.length>2048)return json(res,413,{error:'Request exceeds size limit'});
+  }
+  let data;try{data=JSON.parse(raw)}catch{return json(res,400,{error:'Invalid JSON'})}
+  if(!data || typeof data.serviceId!=='string')return json(res,400,{error:'Missing serviceId'});
+  const answer=demoQuote(data.serviceId,data.quantity);
+  return answer.error?json(res,answer.status,{error:answer.error}):json(res,200,answer);
  }
  if(pathname==='/api/orders' || pathname.startsWith('/api/orders/')){
   return json(res,403,{error:'Checkout is disabled in this public preview. No orders or charges are accepted.'});
  }
  if(pathname==='/api/admin/overview')return json(res,404,{error:'Unavailable in public preview'});
  if(req.method==='GET'&&/^\/services\/[a-z0-9-]{1,90}\/?$/.test(pathname)){
- const id=pathname.split('/')[2];if(!await publicService(id))return json(res,404,{error:'Service not found'});
+ const id=pathname.split('/')[2];if(!(id.startsWith('demo-')?demoServiceById(id):await publicService(id)))return json(res,404,{error:'Service not found'});
  const body=await readFile(path.join(publicRoot,'service.html'));
  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
 }
+ if(req.method==='GET' && ['/cart','/discover'].includes(pathname)){
+  const pageName=pathname==='/cart'?'cart.html':'discover.html';
+  const body=await readFile(path.join(publicRoot,pageName));
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});
+  return res.end(body);
+ }
  if(req.method==='GET' && ['/explore','/tools','/help'].includes(pathname)){
   const pageName=pathname.slice(1)+'.html';
   const body=await readFile(path.join(publicRoot,pageName));

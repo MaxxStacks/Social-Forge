@@ -18,6 +18,9 @@ test('public preview routes and disabled checkout',async()=>{
   const missingService=await fetch(base+'/services/unknown');assert.equal(missingService.status,404);
   for(const route of ['/explore','/tools','/help']){const page=await fetch(base+route);assert.equal(page.status,200);assert.match(await page.text(),/SocialForge/i)}
   for(const asset of ['/pages.css','/explore.js','/tools.js']){const resource=await fetch(base+asset);assert.equal(resource.status,200)}
+  const demo=await fetch(base+'/api/demo/catalog');assert.equal(demo.status,200);const demoData=await demo.json();assert.equal(demoData.services.length,48);assert.equal(demoData.checkoutEnabled,false);
+  const quote=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:1000})});assert.equal(quote.status,200);assert.equal((await quote.json()).quote.checkoutEnabled,false);
+  const invalid=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:-2})});assert.equal(invalid.status,422);
   const payment=await fetch(base+'/api/orders',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});assert.equal(payment.status,403);
   const admin=await fetch(base+'/api/admin/overview');assert.equal(admin.status,404);
  }finally{server.close();}
