@@ -54,7 +54,7 @@ try{
  await page.goto(origin+'/services/demo-instagram-views',{waitUntil:'networkidle'});
  await page.locator('#content').waitFor({state:'visible'});
  expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
- expect((await page.locator('#description').textContent()).includes('SIMULATION ONLY'),'Demo clearly labeled');
+ expect((await page.locator('#description').textContent()).includes('illustrative preview') && (await page.locator('#format2').textContent()).includes('SIMULATED'),'Demo clearly labeled in both description and fulfillment status');
  const live=await fetch(origin+'/api/catalog');
  const liveData=await live.json();
  expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
