@@ -17,10 +17,10 @@ try{
  const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
  page.on('pageerror',e=>issues.push('JS pageerror: '+e.message));
  await page.goto(origin,{waitUntil:'networkidle'});
- await page.locator('.sf-demo-card').first().waitFor();
- expect(await page.locator('.sf-network-link').count()===16,'All 16 platforms visible');
- expect(await page.locator('.sf-demo-card').count()===6,'Six initial demonstrator products shown');
- expect(await page.locator('.sf-hero h1').isVisible(),'Premium homepage headline visible');
+ await page.locator('.rf-category').first().waitFor();
+ expect(await page.locator('.rf-grid-networks a').count()===16,'All 16 platforms visible');
+ expect(await page.locator('.rf-category').count()===4,'Four prominent service categories shown');
+ expect(await page.locator('.rf-hero h1').isVisible(),'Premium homepage headline visible');
  await page.screenshot({path:'qa/home-desktop.png',fullPage:true});
  await page.goto(origin+'/discover?platform=instagram&goal=reach',{waitUntil:'networkidle'});
  await page.locator('.sf-match-card').first().waitFor();
@@ -45,7 +45,7 @@ try{
  const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
  mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
  await mobile.goto(origin,{waitUntil:'networkidle'});
- await mobile.locator('.sf-demo-card').first().waitFor();
+ await mobile.locator('.rf-category').first().waitFor();
  const overflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
  expect(overflow.scroll<=overflow.viewport+2,'Homepage fits 390px mobile viewport');
  await mobile.screenshot({path:'qa/home-mobile.png',fullPage:true});
