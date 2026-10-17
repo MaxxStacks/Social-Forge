@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffdfa">
+<meta name="description" content="Explore a simple social follower, views and engagement package selector in SocialForge's interactive demo. No live orders or payments.">
+<title>Social packages — SocialForge</title>
+<link rel="stylesheet" href="/retail.css"><link rel="stylesheet" href="/shop.css">
+<script defer src="/cart-store.js"></script><script defer src="/shop.js"></script>
+</head><body class="sf-retail">
+<div class="top-note"><span class="top-note-dot"></span> INTERACTIVE PRODUCT PREVIEW <span class="top-note-break">·</span> No real sales, payments or delivery <a href="/explore">Real supplier catalog ↗</a></div>
+<header class="retail-header">
+<a href="/" class="retail-logo"><span class="logo-figure">✳</span>social<span>forge</span><sup>®</sup></a>
+<nav class="retail-nav"><a href="/">Home</a><a href="/discover">All platforms</a><a href="/tools">Free tools</a><a href="/help">Help</a></nav>
+<div class="retail-actions"><a href="/cart" class="retail-cart">Cart <span id="retailCartCount">0</span></a><a href="/discover" class="retail-main-link">All services ↗</a><button id="retailMenuButton" class="retail-menu-button" type="button" aria-label="Open navigation" aria-expanded="false">☰</button></div>
+</header>
+<nav id="retailMobileMenu" class="retail-mobile-nav" aria-label="Mobile navigation" hidden><a href="/">Home</a><a href="/discover">All platforms</a><a href="/cart">Demo cart</a><a href="/help">Help center</a></nav>
+<main class="product-main">
+<div class="shop-container">
+<nav class="product-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a><span>›</span><a href="/discover">Platforms</a><span>›</span><span id="crumbPlatform">Instagram</span><span>›</span><strong id="crumbProduct">Followers</strong></nav>
+<div class="preview-ribbon"><span>✳</span> PRODUCT EXPERIENCE PREVIEW <b>EXAMPLE PACKAGES · NO LIVE CHECKOUT</b></div>
+<div class="product-intro"><div><div class="section-kicker"><span id="networkSymbol">◎</span> <span id="networkTag">INSTAGRAM</span> / SIMPLE PACKAGE SHOPPING</div><h1 id="productTitle">Instagram <em>Followers</em></h1><p id="productDescription">Select a package, adjust the amount, and see the example total instantly. Simple, beautiful, and easy to understand.</p><div class="product-perks"><span>✓ Custom quantities</span><span>✓ Instant sample calculation</span><span>✓ No password requested</span></div></div><div class="product-decor" aria-hidden="true"><span class="decor-ring"></span><div class="decor-social"><b id="decorGlyph">◎</b></div><span class="decor-stars">✦ ✳</span></div></div>
+<div class="product-shopping">
+ <section class="product-selector" aria-label="Configure a package">
+ <div class="selector-heading"><div><span class="flow-step">01</span><h2>Choose your package</h2><p>Pick an amount or enter your own. The total updates as you go.</p></div><span class="selector-mini">INTERACTIVE DEMO</span></div>
+ <div class="package-list" id="packageList"><div class="package-loading">Loading example package options…</div></div>
+ <div class="custom-block"><label for="customQuantity">Or choose your own amount</label><div class="custom-input"><input id="customQuantity" type="number" inputmode="numeric" step="1" min="1" value="500"><span id="quantityUnit">followers</span></div><div class="field-hint" id="quantityHint">Enter an amount within the preview range.</div></div>
+ <div class="selector-heading selector-second"><div><span class="flow-step">02</span><h2>Add your profile link</h2><p>This stays in your browser. The preview does not submit or store your link.</p></div></div>
+ <label class="url-label" for="profileLink">Public social profile or post URL <small>OPTIONAL IN PREVIEW</small></label>
+ <div class="url-wrapper"><span>↗</span><input id="profileLink" type="url" placeholder="https://www.instagram.com/yourprofile/" autocomplete="off"></div>
+ <p class="selector-input-note">No password needed. Nothing is ordered or delivered in this demo.</p>
+ </section>
+ <aside class="checkout-aside" aria-label="Sample order summary">
+ <div class="summary-card"><div class="summary-topline"><span>YOUR PACKAGE</span><span>SIMULATION ONLY</span></div><div class="summary-product"><span id="summarySymbol">◎</span><div><small id="summaryPlatform">INSTAGRAM</small><h3 id="summaryName">Followers</h3></div></div><div class="summary-line"><span>Selected quantity</span><strong id="summaryQuantity">500</strong></div><div class="summary-line"><span>Price per 1,000</span><strong id="summaryRate">—</strong></div><div class="summary-total"><span>YOUR SAMPLE TOTAL</span><b id="summaryTotal">—</b><small id="summaryCurrency">CAD · illustrative estimate</small></div>
+ <div id="summaryFeedback" class="summary-feedback" role="status">Choose a sample amount to preview the total.</div>
+ <button type="button" class="summary-action" id="addDemoCart" disabled>ADD TO DEMO CART <span>↗</span></button><a class="summary-cart-link" href="/cart">View demo cart →</a><div class="summary-safe">✳ No real payment, account interaction or fulfillment will occur.</div></div>
+ <div class="summary-guide"><strong>HOW IT WORKS</strong><div><span>1</span> Pick your example package</div><div><span>2</span> See the price update automatically</div><div><span>3</span> Add it to your demo cart</div></div>
+ </aside>
+</div>
+<div class="product-information"><section class="benefit-box"><div class="section-kicker">THE SOCIALFORGE EXPERIENCE</div><h2>A few clicks.<br><em>That's it.</em></h2><p>No obscure supplier codes or complicated settings. Real, approved services will eventually use this same clear package-selection flow with transparent fulfillment terms.</p><a href="/explore">Check available supplier inventory ↗</a></section><section class="product-faq"><h3>Before you get started</h3><details open><summary>Is this a live product?</summary><p>No. It's an interactive product demonstration with simulated quantities and CAD prices. No supplier is providing this package today.</p></details><details><summary>Can I choose an exact quantity?</summary><p>Yes, use a preset or set any whole number within the example minimum and maximum. Future supplier quantities will come from the connected provider API.</p></details><details><summary>Will my profile be accessed?</summary><p>No. The sample page does not send profile URLs anywhere, and never requires your password.</p></details><details><summary>Can I check out?</summary><p>Checkout and payments are disabled until eligible services, payment processing and fulfillment are ready.</p></details></section></div>
+<section class="related-section"><div class="section-kicker">EXPLORE MORE</div><h2>More for <em id="relatedPlatformName">Instagram</em></h2><div class="related-links" id="relatedLinks"></div></section>
+</div></main>
+<footer class="retail-footer"><div class="retail-container footer-grid"><div><a href="/" class="retail-logo footer-logo"><span class="logo-figure">✳</span>social<span>forge</span><sup>®</sup></a><p>A simpler social marketplace experience.</p></div><div><strong>SHOPPING</strong><a href="/discover">Browse platforms</a><a href="/cart">Demo cart</a><a href="/explore">Supplier catalog</a></div><div><strong>INFORMATION</strong><a href="/tools">Free tools</a><a href="/help">Help center</a></div><div><strong>PLEASE NOTE</strong><p>Simulated product. No purchase or delivery available.</p></div></div><div class="footer-legal retail-container"><span>© 2026 SOCIALFORGE</span><span>DEVELOPMENT PREVIEW · NOT AFFILIATED WITH SOCIAL PLATFORMS</span></div></footer>
+</body></html>

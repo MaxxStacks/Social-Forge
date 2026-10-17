@@ -1,0 +1,36 @@
+(function(){'use strict';
+const $=id=>document.getElementById(id),cart=window.SocialForgeCart;
+const parts=location.pathname.split('/').filter(Boolean);
+const platform=parts[1]||'instagram',category=parts[2]||'followers';
+const names={instagram:'Instagram',tiktok:'TikTok',facebook:'Facebook',youtube:'YouTube',threads:'Threads',x:'X',snapchat:'Snapchat',whatsapp:'WhatsApp',telegram:'Telegram',spotify:'Spotify',discord:'Discord',twitch:'Twitch',pinterest:'Pinterest',linkedin:'LinkedIn',reddit:'Reddit',bluesky:'Bluesky'};
+const glyphs={instagram:'◎',tiktok:'♪',facebook:'f',youtube:'▶',threads:'@',x:'𝕏',snapchat:'◇',whatsapp:'◉',telegram:'➤',spotify:'≋',discord:'◈',twitch:'◧',pinterest:'P',linkedin:'in',reddit:'●',bluesky:'✳'};
+const catNames={followers:'Followers',views:'Views',engagement:'Engagement'};
+const money=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
+const name=names[platform]||platform,categoryName=catNames[category]||category;
+const serviceId='demo-'+platform+'-'+category;
+let service=null,lastQuote=null,seq=0;
+const initial=[100,250,500,1000,2500,5000,10000];
+function validLink(raw){if(!raw.trim())return true;try{const url=new URL(raw.trim());return url.protocol==='https:'&&!url.username&&!url.password&&url.hostname.includes('.')}catch{return false}}
+function updateNav(){if(cart)cart.subscribe(items=>{if($('retailCartCount'))$('retailCartCount').textContent=items.length});$('retailMenuButton')?.addEventListener('click',()=>{const el=$('retailMobileMenu');el.hidden=!el.hidden;$('retailMenuButton').setAttribute('aria-expanded',String(!el.hidden))})}
+function drawLinks(){const wrap=$('relatedLinks');for(const [cat,label,caption] of [['followers','Followers','Explore audience package examples'],['views','Views','Explore view package examples'],['engagement','Engagement','Explore interaction package examples']]){const a=document.createElement('a');a.href='/shop/'+platform+'/'+cat;const b=document.createElement('b');b.textContent=name+' '+label;const small=document.createElement('small');small.textContent=caption;const arrow=document.createElement('span');arrow.textContent='VIEW PACKAGES ↗';a.append(b,small,arrow);wrap.append(a)}}
+function heading(){$('productTitle').replaceChildren(document.createTextNode(name+' '));const em=document.createElement('em');em.textContent=categoryName;$('productTitle').append(em);$('networkTag').textContent=name.toUpperCase();$('networkSymbol').textContent=glyphs[platform]||'✳';$('decorGlyph').textContent=glyphs[platform]||'✳';$('summarySymbol').textContent=glyphs[platform]||'✳';$('summaryPlatform').textContent=name.toUpperCase();$('summaryName').textContent=categoryName;$('crumbPlatform').textContent=name;$('crumbProduct').textContent=categoryName;$('quantityUnit').textContent=category==='engagement'?'interactions':categoryName.toLowerCase();$('relatedPlatformName').textContent=name;$('profileLink').placeholder=platform==='instagram'?'https://www.instagram.com/yourprofile/':'https://example.com/your-public-profile';document.title=name+' '+categoryName+' | Interactive Preview | SocialForge';drawLinks()}
+function options(){const o=[service.min,...initial,service.max].filter(n=>Number.isSafeInteger(n)&&n>=service.min&&n<=service.max);return [...new Set(o)].sort((a,b)=>a-b)}
+async function quote(q){const n=++seq;lastQuote=null;$('addDemoCart').disabled=true;
+ if(!Number.isSafeInteger(q)||q<service.min||q>service.max){$('summaryTotal').textContent='—';$('summaryFeedback').textContent='Choose a whole-number quantity between '+service.min+' and '+service.max.toLocaleString()+'.';return}
+ if(!validLink($('profileLink').value)){$('summaryTotal').textContent='—';$('summaryFeedback').textContent='Enter a valid HTTPS URL or leave the example link blank.';return}
+ $('summaryFeedback').textContent='Calculating example price…';
+ try{const r=await fetch('/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:service.id,quantity:q})});const body=await r.json();if(n!==seq)return;if(!r.ok)throw Error(body.error||'Quote unavailable');lastQuote=body.quote;
+ $('summaryTotal').textContent=money(body.quote.totalCents/100);$('summaryQuantity').textContent=q.toLocaleString();$('summaryRate').textContent=money(body.quote.rateCentsPer1000/100);$('summaryFeedback').textContent='Sample price only. No real order will be created.';$('addDemoCart').disabled=false
+ }catch(e){$('summaryTotal').textContent='—';$('summaryFeedback').textContent=e.message}}
+function selectQuantity(n){$('customQuantity').value=n;$('summaryQuantity').textContent=n.toLocaleString();for(const b of $('packageList').children)b.classList.toggle('selected',Number(b.dataset.amount)===n);quote(n)}
+function buildCards(){const parent=$('packageList');parent.replaceChildren();const presets=options().filter(n=>n!==service.max||n===10000).slice(0,6);if(!presets.length)presets.push(service.min);
+ for(const n of presets){const b=document.createElement('button');b.type='button';b.className='package-tile';b.dataset.amount=n;const check=document.createElement('span');check.className='package-check';check.textContent='✓';const amount=document.createElement('b');amount.textContent=n.toLocaleString();const unit=document.createElement('span');unit.textContent=category==='engagement'?'interactions':category.toLowerCase();const cost=document.createElement('small');cost.textContent='Est. '+money(Math.round(service.pricePer1000*100*n/1000)/100);b.append(check,amount,unit,cost);b.addEventListener('click',()=>selectQuantity(n));parent.append(b)}
+ $('customQuantity').min=service.min;$('customQuantity').max=service.max;$('quantityHint').textContent='Example range: '+service.min.toLocaleString()+' to '+service.max.toLocaleString()+'.';
+ const start=presets.find(n=>n>=500)||presets[0];selectQuantity(start)
+}
+$('customQuantity').addEventListener('input',()=>selectQuantity(Number($('customQuantity').value)));
+$('profileLink').addEventListener('input',()=>{if(service)quote(Number($('customQuantity').value))});
+$('addDemoCart').addEventListener('click',()=>{const q=Number($('customQuantity').value);if(!service||!lastQuote||lastQuote.quantity!==q||!validLink($('profileLink').value))return;if(cart?.add({id:service.id,quantity:q})){$('summaryFeedback').textContent='Added to your demo cart. No charge or supplier order.';$('addDemoCart').textContent='ADDED TO DEMO CART ✓';setTimeout(()=>{$('addDemoCart').textContent='ADD TO DEMO CART ↗'},2300)}});
+updateNav();heading();
+(async()=>{try{const r=await fetch('/api/demo/services/'+encodeURIComponent(serviceId));if(!r.ok)throw Error('No sample package for this combination');service=(await r.json()).service;$('productDescription').textContent='Choose a sample '+categoryName.toLowerCase()+' package, see the total update instantly, and try the demo cart. A simple checkout experience, without the complexity.';buildCards()}catch(e){$('packageList').textContent='This demonstration is temporarily unavailable.';$('summaryFeedback').textContent='No active example product for this selection.'}})();
+})();

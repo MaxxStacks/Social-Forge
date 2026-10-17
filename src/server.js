@@ -9,7 +9,7 @@ import {publicCatalog,publicService} from './supplier-catalog.js';
 import {demoServices,demoServiceById,demoQuote} from './demo-catalog.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
+const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/retail.css','retail.css'],['/retail.js','retail.js'],['/shop.css','shop.css'],['/shop.js','shop.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
 const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
@@ -66,25 +66,32 @@ export async function handle(req,res){
  if(req.method==='GET'&&/^\/services\/[a-z0-9-]{1,90}\/?$/.test(pathname)){
  const id=pathname.split('/')[2];if(!(id.startsWith('demo-')?demoServiceById(id):await publicService(id)))return json(res,404,{error:'Service not found'});
  const body=await readFile(path.join(publicRoot,'service.html'));
- res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
+ res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
 }
+ if(req.method==='GET' && /^\/shop\/[a-z0-9-]+\/(followers|views|engagement)\/?$/.test(pathname)){
+  const [,shop,network,serviceType]=pathname.split('/');
+  if(!platforms.some(p=>p.id===network) || !['followers','views','engagement'].includes(serviceType))return json(res,404,{error:'Unsupported sample service'});
+  const body=await readFile(path.join(publicRoot,'shop.html'));
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
+  return res.end(body);
+ }
  if(req.method==='GET' && ['/cart','/discover','/operations'].includes(pathname)){
   const pageName=pathname==='/cart'?'cart.html':pathname==='/operations'?'operations.html':'discover.html';
   const body=await readFile(path.join(publicRoot,pageName));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});
   return res.end(body);
  }
  if(req.method==='GET' && ['/explore','/tools','/help'].includes(pathname)){
   const pageName=pathname.slice(1)+'.html';
   const body=await readFile(path.join(publicRoot,pageName));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
   return res.end(body);
  }
  if(req.method==='GET' && files.has(pathname)){
   const name=files.get(pathname);
   const type=contentTypes[path.extname(name)]||'application/octet-stream';
   const body=await readFile(path.join(publicRoot,name));
-  res.writeHead(200,{'Content-Type':type,'Cache-Control':name==='index.html'?'no-cache':'public, max-age=3600',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
+  res.writeHead(200,{'Content-Type':type,'Cache-Control':name==='index.html'?'no-cache':'public, max-age=3600',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
   return res.end(body);
  }
  return json(res,404,{error:'Not found'});
