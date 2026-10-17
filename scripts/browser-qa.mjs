@@ -41,6 +41,7 @@ try{
  await page.locator('.package-tile').nth(2).click();
  await page.waitForFunction(()=>document.querySelector('#summaryTotal')?.textContent?.includes('$'));
  expect((await page.locator('#summaryTotal').textContent()).includes('$'),'Product price adjusts with selected quantity');
+ await page.waitForFunction(()=>document.getElementById('addDemoCart')?.disabled===false);
  expect(await page.locator('#addDemoCart').isEnabled(),'Product demo cart action enabled for valid quantity');
  await page.screenshot({path:'qa/followers-product-desktop.png',fullPage:true});
  await page.locator('#addDemoCart').click();
