@@ -6,7 +6,7 @@ import {platforms} from './catalog.js';
 import {publicCatalog,publicService} from './supplier-catalog.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css']]);
+const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js']]);
 const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
@@ -38,6 +38,12 @@ export async function handle(req,res){
  const body=await readFile(path.join(publicRoot,'service.html'));
  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
 }
+ if(req.method==='GET' && ['/explore','/tools','/help'].includes(pathname)){
+  const pageName=pathname.slice(1)+'.html';
+  const body=await readFile(path.join(publicRoot,pageName));
+  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
+  return res.end(body);
+ }
  if(req.method==='GET' && files.has(pathname)){
   const name=files.get(pathname);
   const type=contentTypes[path.extname(name)]||'application/octet-stream';
