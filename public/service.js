@@ -15,7 +15,7 @@ function initializeQuantityPreview(service){
    el('quantityTotal').textContent=ok&&validRate?amount(Math.round(service.pricePer1000*n/1000*100)/100,service.priceCurrency)+' '+service.priceCurrency:'Price unavailable';
    for(const b of presets.children)b.classList.toggle('selected',Number(b.dataset.quantity)===n);
  };
- quantity.min=service.min;quantity.max=service.max;quantity.value=service.min;
+ quantity.min=service.min;quantity.max=service.max;const chosen=Number(new URLSearchParams(location.search).get('qty'));quantity.value=Number.isSafeInteger(chosen)&&chosen>=service.min&&chosen<=service.max?chosen:service.min;
  el('quantityRange').textContent='Minimum '+service.min.toLocaleString()+' — Maximum '+service.max.toLocaleString();
  for(const amount of options){const button=document.createElement('button');button.type='button';button.dataset.quantity=amount;button.textContent=amount.toLocaleString();button.addEventListener('click',()=>{quantity.value=amount;paint()});presets.append(button)}
  quantity.addEventListener('input',paint);target.addEventListener('input',paint);paint();
