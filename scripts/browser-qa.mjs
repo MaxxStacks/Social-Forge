@@ -66,7 +66,29 @@ try{
  await page.locator('#customQuantity').fill('5000');
  await page.locator('#promoCode').fill('WELCOME10');
  await page.locator('#applyPromo').click();
- await page.waitForFunction(()=>document.querySelector('#summaryCoupon')?.textContent?.includes('
+
+ await page.waitForFunction(()=>document.getElementById('summaryCoupon')?.textContent?.startsWith('-'));
+ expect((await page.locator('#summaryVolume').textContent()).includes('10%'),'Volume discount updates for 5000 units');
+ await page.locator('#addDemoCart').click();
+ await page.goto(origin+'/cart',{waitUntil:'networkidle'});
+ await page.locator('.sf-cart-item').first().waitFor();
+ expect((await page.locator('#cartVolumeSavings').textContent()).startsWith('-'),'Cart shows sample volume savings');
+ await page.locator('#cartPromoCode').fill('WELCOME10');
+ await page.locator('#cartApplyPromo').click();
+ await page.waitForFunction(()=>document.getElementById('cartCouponSavings')?.textContent?.startsWith('-'));
+ expect(await page.locator('#createDemoOrder').isEnabled(),'Demo checkout available for local mock order');
+ await page.locator('#createDemoOrder').click();
+ await page.waitForURL(/track/);
+ expect((await page.locator('#trackStatus').textContent()).includes('not paid'),'Mock order never marked paid');
+ await page.goto(origin+'/rewards',{waitUntil:'networkidle'});
+ expect(await page.locator('.program-metric').count()===3,'Rewards dashboard renders');
+ await page.goto(origin+'/affiliates',{waitUntil:'networkidle'});
+ expect(await page.locator('#affTotal').isVisible(),'Affiliate calculator renders');
+ await page.goto(origin+'/support',{waitUntil:'networkidle'});
+ await page.locator('#chatText').fill('What discount codes work?');
+ await page.locator('#chatForm button').click();
+ expect((await page.locator('#chatLog').textContent()).includes('WELCOME10'),'Scripted support answers discount question');
+ await page.goto(origin+'/services/demo-instagram-views',{waitUntil:'networkidle'});
  await page.locator('#content').waitFor({state:'visible'});
  expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
  expect((await page.locator('#description').textContent()).includes('illustrative preview') && (await page.locator('#format2').textContent()).includes('SIMULATED'),'Demo clearly labeled in both description and fulfillment status');
