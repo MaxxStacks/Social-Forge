@@ -54,6 +54,17 @@ try{
  const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
  expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
  await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
+ for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.sf-header').isVisible(),route+' displays the unified header')}
+ await page.goto(origin+'/tools',{waitUntil:'networkidle'});
+ await page.locator('#utmDestination').fill('https://example.com/offer');
+ await page.locator('#utmSource').fill('instagram');
+ await page.locator('#utmMedium').fill('social');
+ await page.locator('#utmCampaign').fill('launch');
+ await page.locator('#utmBuild').click();
+ expect((await page.locator('#utmOutput').textContent()).includes('utm_campaign=launch'),'Free UTM builder works');
+ await page.locator('#hashInput').fill('Marketing, #Marketing, social media');
+ await page.locator('#hashClean').click();
+ expect((await page.locator('#hashOutput').textContent()).includes('#marketing'),'Hashtag cleaner works');
  expect(issues.length===0,'No JavaScript runtime errors');
  await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow},null,2));
  console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));
