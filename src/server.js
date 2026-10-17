@@ -2,10 +2,10 @@ import http from 'node:http';
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
-import {platforms,services} from './catalog.js';
+import {platforms,services,getService} from './catalog.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js']]);
+const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css']]);
 const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
@@ -21,10 +21,20 @@ export async function handle(req,res){
   const query=(url.searchParams.get('q')||'').toLowerCase().trim().slice(0,120);
   return json(res,200,{platforms,services:services.filter(s=>(!platform||s.platform===platform)&&(!query||`${s.name} ${s.description} ${s.platform} ${s.category}`.toLowerCase().includes(query)))});
  }
+ if(req.method==='GET'&&pathname.startsWith('/api/services/')){
+ const id=pathname.slice('/api/services/'.length);
+ if(!/^[a-z0-9-]{1,90}$/.test(id))return json(res,404,{error:'Service not found'});
+ const service=getService(id);return service?json(res,200,{service}):json(res,404,{error:'Service not found'});
+}
  if(pathname==='/api/orders' || pathname.startsWith('/api/orders/')){
   return json(res,403,{error:'Checkout is disabled in this public preview. No orders or charges are accepted.'});
  }
  if(pathname==='/api/admin/overview')return json(res,404,{error:'Unavailable in public preview'});
+ if(req.method==='GET'&&/^\/services\/[a-z0-9-]{1,90}\/?$/.test(pathname)){
+ const id=pathname.split('/')[2];if(!getService(id))return json(res,404,{error:'Service not found'});
+ const body=await readFile(path.join(publicRoot,'service.html'));
+ res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
+}
  if(req.method==='GET' && files.has(pathname)){
   const name=files.get(pathname);
   const type=contentTypes[path.extname(name)]||'application/octet-stream';
