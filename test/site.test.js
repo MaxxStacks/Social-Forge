@@ -32,6 +32,19 @@ test('public preview routes and disabled checkout',async()=>{
   const demo=await fetch(base+'/api/demo/catalog');assert.equal(demo.status,200);const demoData=await demo.json();assert.equal(demoData.services.length,48);assert.equal(demoData.checkoutEnabled,false);
   const quote=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:1000})});assert.equal(quote.status,200);assert.equal((await quote.json()).quote.checkoutEnabled,false);
   const invalid=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-views',quantity:-2})});assert.equal(invalid.status,422);
+  for(const route of ['/volume','/discounts','/rewards','/affiliates','/account','/track','/articles','/articles/choosing-social-services','/support']){
+    const response=await fetch(base+route);assert.equal(response.status,200,'Route: '+route);
+    assert.match(await response.text(),/programMain/,'Programs shell: '+route);
+  }
+  for(const asset of ['/programs.css','/programs.js','/resources.js','/cart-flat.css']){
+    assert.equal((await fetch(base+asset)).status,200,'Asset: '+asset);
+  }
+  const discounted=await fetch(base+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-followers',quantity:5000,code:'WELCOME10'})});
+  assert.equal(discounted.status,200);
+  const promo=(await discounted.json()).quote;
+  assert.equal(promo.volumePercent,10);
+  assert.equal(promo.couponPercent,10);
+  assert.ok(promo.totalCents<promo.baseCents);
   const payment=await fetch(base+'/api/orders',{method:'POST',headers:{'content-type':'application/json'},body:'{}'});assert.equal(payment.status,403);
   const admin=await fetch(base+'/api/admin/overview');assert.equal(admin.status,404);
  }finally{server.close();}
