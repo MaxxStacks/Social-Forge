@@ -1,7 +1,7 @@
 (function(){'use strict';
 const byId=id=>document.getElementById(id),cart=window.SocialForgeCart;
 const money=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
-const samples=new Map();let expected=0;
+const samples=new Map();let expected=0;let promoCode='';let cartPreviewTotalCents=0;
 const quote=async(id,quantity)=>{const r=await fetch('/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:id,quantity})});const data=await r.json();if(!r.ok)throw Error(data.error||'Invalid');return data.quote};
 byId('sfMenu')?.addEventListener('click',()=>{const n=byId('sfMobileNav');n.hidden=!n.hidden;byId('sfMenu').setAttribute('aria-expanded',String(!n.hidden))});
 function clearStats(){for(const id of ['summaryCount','cartItemCount','sfHeaderCartCount']){const node=byId(id);if(node)node.textContent=id==='cartItemCount'?'(0)':'0'}byId('summaryTotal').textContent=money(0);byId('summarySubtotal').textContent=money(0)}
@@ -9,7 +9,18 @@ async function renderCart(){if(!samples.size)return;const seq=++expected;const i
 for(const x of items){try{const q=await quote(x.id,x.quantity);valid.push({item:x,quote:q,service:samples.get(x.id)})}catch{cart.remove(x.id);return}}
 if(seq!==expected)return;const area=byId('cartItems');area.replaceChildren();
 byId('sfHeaderCartCount').textContent=items.length;byId('summaryCount').textContent=items.length;byId('cartItemCount').textContent='('+items.length+')';
-const sum=valid.reduce((acc,x)=>acc+x.quote.totalCents,0);byId('summaryTotal').textContent=money(sum/100);byId('summarySubtotal').textContent=money(sum/100);
+const totalBase=valid.reduce((acc,x)=>acc+(x.quote.baseCents??x.quote.totalCents),0);
+const afterVolume=valid.reduce((acc,x)=>acc+x.quote.totalCents,0);
+const codePct={WELCOME10:10,SAVE5:5,BULK15:15};
+const qualifies=promoCode!=='BULK15'||afterVolume>=5000;
+const couponCents=qualifies&&promoCode?Math.round(afterVolume*(codePct[promoCode]||0)/100):0;
+cartPreviewTotalCents=afterVolume-couponCents;
+byId('summaryTotal').textContent=qualifies?money(cartPreviewTotalCents/100):'—';
+byId('summarySubtotal').textContent=money(totalBase/100);
+byId('cartVolumeSavings').textContent='-'+money((totalBase-afterVolume)/100);
+byId('cartCouponSavings').textContent='-'+money(couponCents/100);
+byId('cartPromoStatus').textContent=qualifies?'Sample savings only. Coupon does not create a real commercial discount.':'BULK15 requires at least $50 in the sample cart after volume savings.';
+byId('createDemoOrder').disabled=!valid.length||!qualifies;
 if(!valid.length){const empty=document.createElement('div');empty.className='sf-cart-empty';empty.innerHTML='<div>✳</div><h3>Your demo cart is empty.</h3><p>Build a sample order with the service finder. No payment details are required.</p><a href="/discover">FIND DEMO SERVICES ↗</a>';area.append(empty);return}
 for(const x of valid){const s=x.service;const card=document.createElement('article');card.className='sf-cart-item';
 const icon=document.createElement('div');icon.className='sf-cart-item-icon';icon.textContent='✳';
@@ -21,7 +32,23 @@ label.append(input);content.append(h,p,label,hint);
 const right=document.createElement('div');right.className='sf-cart-item-right';const price=document.createElement('strong');price.textContent=money(x.quote.totalCents/100);const remove=document.createElement('button');remove.type='button';remove.textContent='REMOVE ×';remove.addEventListener('click',()=>{cart.remove(s.id);renderCart()});right.append(price,remove);
 card.append(icon,content,right);area.append(card)}
 }
+byId('cartPromoCode').value=promoCode;
 byId('clearCart').addEventListener('click',()=>{cart.clear();renderCart()});
+byId('cartApplyPromo').addEventListener('click',()=>{
+ const v=byId('cartPromoCode').value.trim().toUpperCase();
+ if(v&&!['WELCOME10','SAVE5','BULK15'].includes(v)){byId('cartPromoStatus').textContent='Unknown demonstration code.';return}
+ promoCode=v;renderCart();
+});
+byId('createDemoOrder').addEventListener('click',()=>{
+ const items=cart.get().filter(x=>samples.has(x.id));
+ if(!items.length||byId('createDemoOrder').disabled)return;
+ const id='SF-DEMO-'+Date.now().toString(36).toUpperCase();
+ const order={id,date:new Date().toISOString(),items:items.map(x=>({id:x.id,quantity:x.quantity})),totalCents:cartPreviewTotalCents,code:promoCode,status:'Demo only — not paid, submitted or delivered'};
+ let orders=[];try{orders=JSON.parse(localStorage.getItem('sf.demo.orders')||'[]')}catch{}
+ orders.unshift(order);try{localStorage.setItem('sf.demo.orders',JSON.stringify(orders.slice(0,50)))}catch{}
+ cart.clear();location.assign('/track?order='+encodeURIComponent(id));
+});
+
 byId('exportQuote').addEventListener('click',()=>{const items=cart.get().filter(x=>samples.has(x.id));if(!items.length)return;const rows=[['Service','Quantity','Sample rate per 1,000','Currency','Notice'],...items.map(x=>{const s=samples.get(x.id);return [s.name,x.quantity,s.pricePer1000,'CAD','Simulation only, not purchasable']})];const csv=rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\r\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='socialforge-simulated-quote.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),500)});
 cart?.subscribe(()=>{byId('sfHeaderCartCount').textContent=cart.count()});
 (async()=>{try{const response=await fetch('/api/demo/catalog');if(!response.ok)throw Error('Catalog unavailable');const {services}=await response.json();for(const s of services)samples.set(s.id,s);await renderCart()}catch{byId('cartItems').textContent='The sample cart is currently unavailable.';clearStats()}})();
