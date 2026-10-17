@@ -59,4 +59,18 @@ export async function fetchSupplierServices(provider, key, fetcher=fetch){
  if(!Array.isArray(body))throw new Error(provider.id+' sent an invalid services response');
  return body;
 }
+export async function fetchSupplierCurrency(provider,key,fetcher=fetch){
+ const form=provider.format==='form';
+ const body=form?new URLSearchParams({key,action:'balance'}).toString():JSON.stringify({key,action:'balance'});
+ try{
+  const result=await fetcher(provider.endpoint,{
+   method:'POST',headers:{'Content-Type':form?'application/x-www-form-urlencoded':'application/json'},
+   body,signal:AbortSignal.timeout(12000)
+  });
+  if(!result.ok)return 'UNVERIFIED';
+  const data=await result.json();
+  const currency=String(data?.currency||'').trim().toUpperCase();
+  return /^[A-Z]{3}$/.test(currency)?currency:'UNVERIFIED';
+ }catch{return 'UNVERIFIED'}
+}
 export const sanitizeForStorefront=({ _supplierId,_supplierServiceId,_wholesaleRate,...publicService})=>publicService;

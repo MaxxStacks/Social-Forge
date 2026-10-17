@@ -1,4 +1,4 @@
-import {PROVIDERS,fetchSupplierServices,normalizeServices,sanitizeForStorefront} from './suppliers.js';
+import {PROVIDERS,fetchSupplierServices,fetchSupplierCurrency,normalizeServices,sanitizeForStorefront} from './suppliers.js';
 const MAX_AGE_MS=15*60*1000;
 let state={services:[],providers:[],lastUpdated:null,configured:0,connected:0,errors:[]};
 let expires=0;
@@ -17,8 +17,8 @@ export async function getSnapshot({force=false,environment=process.env,fetcher=f
   const markup=Number(environment.RETAIL_MARKUP_MULTIPLIER||'2.5');
   if(!Number.isFinite(markup)||markup<1||markup>20)throw Error('Invalid markup configuration');
   const outcomes=await Promise.allSettled(configured.map(async p=>{
-   const rows=await fetchSupplierServices(p,environment[p.keyName],fetcher);
-   return {provider:p,rows,services:normalizeServices(rows,p,markup)};
+   const [rows,currency]=await Promise.all([fetchSupplierServices(p,environment[p.keyName],fetcher),fetchSupplierCurrency(p,environment[p.keyName],fetcher)]);
+   return {provider:p,rows,services:normalizeServices(rows,p,markup,currency),currency};
   }));
   const services=[],errors=[];
   for(let i=0;i<outcomes.length;i++){
