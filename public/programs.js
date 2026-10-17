@@ -1,5 +1,5 @@
 (function(){'use strict';
-const $=id=>document.getElementById(id),fmt=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
+const $=id=>document.getElementById(String(id).replace(/^#/,'')),fmt=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
 const orders=()=>{try{return JSON.parse(localStorage.getItem('sf.demo.orders')||'[]')}catch{return []}};
 const get=(key,fallback)=>{try{return JSON.parse(localStorage.getItem(key))??fallback}catch{return fallback}};
 const put=(key,value)=>{try{localStorage.setItem(key,JSON.stringify(value))}catch{}};
