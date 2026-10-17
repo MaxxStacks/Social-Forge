@@ -13,6 +13,9 @@ test('public preview routes and disabled checkout',async()=>{
   const health=await fetch(base+'/api/health'); assert.equal(health.status,200); assert.equal((await health.json()).mode,'preview');
   const home=await fetch(base+'/'); assert.equal(home.status,200); assert.match(await home.text(),/SocialForge/);
   const css=await fetch(base+'/styles.css');assert.equal(css.status,200);
+  const retailStyle=await fetch(base+'/retail-v2.css');assert.equal(retailStyle.status,200);
+  const retailJs=await fetch(base+'/retail-v2.js');assert.equal(retailJs.status,200);
+  assert.match(await home.text(),/Instagram followers/i);
   const script=await fetch(base+'/app.js');assert.equal(script.status,200);
   const catalog=await fetch(base+'/api/catalog?platform=instagram');const data=await catalog.json();assert.equal(catalog.status,200);assert.equal(data.platforms.length,16);assert.equal(data.sync.mode,'supplier-api-read-only');
   const missingService=await fetch(base+'/services/unknown');assert.equal(missingService.status,404);
