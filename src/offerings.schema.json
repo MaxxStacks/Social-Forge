@@ -1,11 +1,8 @@
 {
-  "revision": 1,
-  "offerCount": 36,
-  "categories": [
-    "design",
-    "video",
-    "content",
-    "audit"
-  ],
-  "note": "Preview inventory only. No orders or payments. No guaranteed engagement outcomes."
+  "catalog": "supplier-derived",
+  "manualProductsAllowed": false,
+  "mode": "read-only",
+  "supplierKeys": "Railway environment only",
+  "checkout": false,
+  "platforms": 16
 }
