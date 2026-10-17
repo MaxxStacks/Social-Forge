@@ -1,53 +1,54 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b151b">
-<meta name="description" content="SocialForge — the social services marketplace designed for 16 networks, transparent supplier-powered discovery, and a smarter shopping experience. Explore the interactive prototype.">
-<title>SocialForge — The next generation social services marketplace</title>
-<link rel="stylesheet" href="/experience.css">
-<script defer src="/cart-store.js"></script><script defer src="/experience.js"></script>
-</head>
-<body class="sf-page">
-<div class="sf-announcement"><span class="sf-live-dot"></span><span>THE NEXT CHAPTER IN SOCIAL COMMERCE</span><span class="sf-announcement-end">2026 PRODUCT PREVIEW <span class="sf-divider-pipe">/</span> NO LIVE CHECKOUT</span></div>
-<header class="sf-header">
- <a class="sf-logo" href="/" aria-label="SocialForge Home"><span class="sf-logo-mark">✳</span><span>SOCIAL<span class="sf-logo-accent">FORGE</span><sup>®</sup></span></a>
- <nav class="sf-navigation" aria-label="Main menu"><a href="/discover">Find services</a><a href="/explore">Live catalog</a><a href="/tools">Free tools</a><a href="/help">Support</a><a href="/operations">Build status</a></nav>
- <div class="sf-header-actions"><span class="sf-status"><span></span> PLATFORM PREVIEW</span><a href="/cart" class="sf-cart-nav" aria-label="Open demo cart">CART <b id="sfHeaderCartCount">0</b> <span>↗</span></a><button type="button" class="sf-menu" id="sfMenu" aria-label="Toggle menu" aria-expanded="false">☰</button></div>
-</header>
-<div class="sf-mobile-nav" id="sfMobileNav" hidden><a href="/discover">Find services ↗</a><a href="/explore">Live catalog ↗</a><a href="/tools">Free tools ↗</a><a href="/help">Support ↗</a><a href="/cart">Demo cart ↗</a><a href="/operations">Build status ↗</a></div>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#fffdfb">
+<meta name="description" content="Explore social-media service categories across Instagram, TikTok, Facebook, YouTube and more. Interactive examples; checkout is not live.">
+<title>SocialForge — Social services made simple</title>
+<link rel="stylesheet" href="/retail-v2.css"><script src="/cart-store.js" defer></script><script src="/retail-v2.js" defer></script></head>
+<body>
+<div class="rf-topbar"><div class="rf-wrap"><span>✳ SOCIALFORGE / THE SOCIAL SERVICE STORE</span><span>INTERACTIVE DEVELOPMENT PREVIEW · NO LIVE PURCHASES</span></div></div>
+<header class="rf-header"><div class="rf-wrap rf-header-inner">
+<a class="rf-logo" href="/" aria-label="SocialForge homepage"><span class="rf-logo-icon">✳</span><span>social<em>forge.</em></span></a>
+<nav class="rf-nav" aria-label="Main menu"><a href="/services/demo-instagram-followers">Instagram</a><a href="/services/demo-tiktok-followers">TikTok</a><a href="/services/demo-facebook-followers">Facebook</a><a href="/services/demo-youtube-views">YouTube</a><a href="#platforms">All platforms</a><a href="/tools">Free tools</a></nav>
+<a class="rf-cart" href="/cart">Demo cart <b id="cartCount">0</b></a>
+<button type="button" id="menuToggle" class="rf-menu-btn" aria-label="Open menu" aria-controls="mobileMenu" aria-expanded="false">☰</button>
+</div><nav class="rf-mobile" id="mobileMenu" hidden><a href="/services/demo-instagram-followers">Instagram followers</a><a href="/services/demo-tiktok-followers">TikTok followers</a><a href="/services/demo-facebook-followers">Facebook followers</a><a href="/services/demo-youtube-views">YouTube views</a><a href="#platforms">All platforms</a><a href="/tools">Free tools</a><a href="/cart">Demo cart</a></nav></header>
 <main>
-<section class="sf-hero"><div class="sf-hero-grid"></div><div class="sf-hero-inner">
- <div class="sf-hero-copy"><div class="sf-overline"><span class="sf-overline-line"></span> ONE COMMAND CENTER. EVERY NETWORK.</div>
- <h1>SOCIAL<br><span>COMMERCE,</span><br><em>REENGINEERED.</em></h1>
- <p class="sf-hero-sub">Find social media services across <strong>16 networks</strong> through one intelligent storefront. Transparent supplier data. Smarter discovery. An ordering system designed for automation.</p>
- <div class="sf-hero-buttons"><a class="sf-cta-primary" href="/discover">EXPLORE THE EXPERIENCE <span>↗</span></a><a class="sf-cta-quiet" href="/explore">VIEW REAL SUPPLIER CATALOG <span>↗</span></a></div>
- <div class="sf-hero-foot"><span><i></i> SAMPLE PRODUCTS IN THE DEMO ARE NOT FOR SALE</span><span class="sf-scroll">SCROLL TO EXPLORE ↓</span></div>
- </div>
- <div class="sf-console"><div class="sf-console-top"><span><span class="sf-console-symbol">✳</span> FORGE / SERVICE FINDER</span><b>EXPERIENCE_01</b></div>
- <div class="sf-console-body"><span class="sf-console-eyebrow">START WITH YOUR GOAL</span><h2>What are you<br><em>looking to achieve?</em></h2><div class="sf-console-form">
- <label for="heroNetwork">SOCIAL NETWORK</label><select id="heroNetwork"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option><option value="youtube">YouTube</option><option value="facebook">Facebook</option><option value="threads">Threads</option><option value="x">X / Twitter</option><option value="snapchat">Snapchat</option><option value="whatsapp">WhatsApp</option><option value="telegram">Telegram</option><option value="spotify">Spotify</option><option value="discord">Discord</option><option value="twitch">Twitch</option><option value="pinterest">Pinterest</option><option value="linkedin">LinkedIn</option><option value="reddit">Reddit</option><option value="bluesky">Bluesky</option></select>
- <label for="heroGoal">I'M INTERESTED IN</label><select id="heroGoal"><option value="reach">More reach / visibility</option><option value="audience">Growing an audience</option><option value="engagement">Community engagement</option></select>
- <button id="heroMatch" class="sf-console-button" type="button">FIND MATCHING SERVICES <span>↗</span></button>
- </div></div>
- <div class="sf-console-bottom"><span><span class="sf-live-dot"></span> RULE-BASED MATCHING PREVIEW</span><span>NO ACCOUNT REQUIRED</span></div>
- <div class="sf-console-float"><span>PLATFORM COVERAGE</span><b>16<span>+</span></b><small>NETWORK TAXONOMIES</small></div>
- </div>
- </div></section>
-<section class="sf-network-section" id="networks"><div class="sf-section-wrap"><div class="sf-network-heading"><span>CHOOSE YOUR NETWORK</span><span>ALL 16 / SOCIAL PLATFORMS <b>↗</b></span></div><div class="sf-network-grid" id="sfNetworks"></div></div></section>
-<section class="sf-about-section"><div class="sf-section-wrap"><div class="sf-about-head"><div><div class="sf-kicker"><span>01</span> THE EXPERIENCE</div><h2>Not just another<br><em>social panel.</em></h2></div><p>We’re taking the best of transactional social marketplaces—simple service selection, flexible quantities, clear pricing—and adding more useful guidance and automation. <strong>The interactive store is currently a simulation.</strong></p></div>
- <div class="sf-pillar-grid"><div class="sf-pillar sf-pillar-one"><span class="sf-pillar-index">01 / DISCOVER</span><div class="sf-pillar-drawing sf-drawing-network"><span>◎</span><span>♪</span><span>▶</span><span>𝕏</span></div><h3>Find the right<br>service faster.</h3><p>Search by platform and goal instead of digging through hundreds of cryptic SKU names.</p><a href="/discover">TRY SMART DISCOVERY ↗</a></div>
- <div class="sf-pillar sf-pillar-two"><span class="sf-pillar-index">02 / CONFIGURE</span><div class="sf-mock-quantity"><b>BUILD YOUR PACKAGE</b><div class="sf-mock-pills"><span>250</span><span>500</span><span class="selected">1,000</span><span>5,000</span></div><div class="sf-mock-bottom"><span>ILLUSTRATIVE TOTAL</span><strong>$9.80</strong></div></div><h3>Full control.<br>No guesswork.</h3><p>Quantity presets, custom amounts, eligibility ranges, and transparent quote calculations.</p><a href="/discover">EXPLORE QUOTES ↗</a></div>
- <div class="sf-pillar sf-pillar-three"><span class="sf-pillar-index">03 / AUTOMATE</span><div class="sf-flow"><div>CATALOG <span>✓</span></div><i></i><div>VALIDATE <span>✓</span></div><i></i><div>FULFILL <span>PLANNED</span></div></div><h3>Built around<br>automation.</h3><p>Supplier API adapters already exist; order processing, payment confirmation and tracking are next.</p><a href="/help">SEE HOW IT WORKS ↗</a></div></div>
- </div></section>
-<section class="sf-explore-section" id="preview"><div class="sf-section-wrap"><div class="sf-explore-top"><div><div class="sf-kicker sf-kicker-inverse"><span>02</span> INTERACTIVE PRODUCT DEMO</div><h2>Experience the<br><em>whole storefront.</em></h2></div><div class="sf-explore-right"><p>Browse sample packages, adjust quantities, preview the price and add them to a demo cart. <strong>All examples are simulated.</strong> The real store remains empty until supplier APIs are authenticated.</p><a href="/explore" class="sf-inline-light">GO TO REAL SUPPLIER CATALOG ↗</a></div></div>
- <div class="sf-demo-strip"><span><i></i> SIMULATION MODE</span><span>NOT ACTUAL SUPPLIER SERVICES OR PRICES</span><a href="/cart">VIEW DEMO CART <b id="sfSectionCartCount">0</b> ↗</a></div>
- <div class="sf-demo-filters"><div class="sf-filters-tabs" role="group" aria-label="Demo product categories"><button type="button" class="sf-filter-active" data-category="all">ALL</button><button type="button" data-category="followers">AUDIENCE</button><button type="button" data-category="views">REACH</button><button type="button" data-category="engagement">ENGAGEMENT</button></div><label>NETWORK <select id="sfDemoPlatform"><option value="all">All platforms</option></select></label></div>
- <div id="sfDemoCards" class="sf-demo-grid" aria-live="polite"><div class="sf-demo-loading">Loading demo experience…</div></div>
- <div class="sf-demo-actions"><button id="sfShowMore" class="sf-outline-button" type="button">SHOW MORE DEMO SERVICES ↓</button><a class="sf-link-underline" href="/discover">FIND THE BEST MATCH FOR YOUR GOAL ↗</a></div>
- </div></section>
-<section class="sf-intelligence-section"><div class="sf-section-wrap"><div class="sf-intelligence-content"><div class="sf-kicker"><span>03</span> THE INTELLIGENCE LAYER</div><h2>Built for<br><em>better decisions.</em></h2><p>Graming makes it easy to buy a package. We're designing SocialForge to help you understand what to choose, what it costs, and what a supplier can actually deliver. The current matching tool is <strong>rules-based, not a connected AI model</strong>.</p><a href="/discover" class="sf-cta-dark">MEET FORGE MATCH <span>↗</span></a></div><div class="sf-intelligence-canvas" aria-hidden="true"><div class="sf-orbit orbit-a"></div><div class="sf-orbit orbit-b"></div><div class="sf-orbit orbit-c"></div><div class="sf-intelligence-core">✳</div><div class="sf-intelligence-node sf-node-one">01 <b>DISCOVER</b></div><div class="sf-intelligence-node sf-node-two">02 <b>COMPARE</b></div><div class="sf-intelligence-node sf-node-three">03 <b>DECIDE</b></div></div></div></section>
-<section class="sf-steps-section"><div class="sf-section-wrap"><div class="sf-kicker"><span>04</span> THE ROAD TO ONE-CLICK COMMERCE</div><div class="sf-steps-title"><h2>Four steps.<br><em>One connected journey.</em></h2><p>Already usable: browse, simulate package quantities and build a demo cart. The last two steps only activate once real supplier fulfillment and an approved payment processor are integrated.</p></div><div class="sf-steps-grid"><div><b>01</b><h3>Choose</h3><p>Find a relevant service by platform and business goal.</p><span class="sf-step-live">DEMO LIVE</span></div><div><b>02</b><h3>Configure</h3><p>Set a quantity, review limits and calculate a sample total.</p><span class="sf-step-live">DEMO LIVE</span></div><div><b>03</b><h3>Checkout</h3><p>Approved payment methods and clear final charges.</p><span class="sf-step-planned">IN DEVELOPMENT</span></div><div><b>04</b><h3>Track</h3><p>Supplier status sync, refills and a customer order timeline.</p><span class="sf-step-planned">IN DEVELOPMENT</span></div></div></div></section>
-<section class="sf-bottom-cta"><div class="sf-section-wrap"><div class="sf-kicker sf-kicker-inverse"><span>✳</span> A SMARTER SOCIAL MARKETPLACE</div><h2>YOUR NEXT MOVE<br><em>STARTS HERE.</em></h2><div><p>Explore the prototype today. Real supplier inventory and checkout are still being built.</p><a href="/discover">OPEN THE INTERACTIVE EXPERIENCE ↗</a></div></div></section>
+<section class="rf-hero"><div class="rf-wrap rf-hero-grid">
+<div class="rf-hero-copy">
+<div class="rf-overline"><span class="rf-dot"></span> THE SOCIAL SERVICES STORE</div>
+<h1>Find your next<br>social <em>boost.</em><br>Simply.</h1>
+<p>Followers, views and engagement categories across the platforms you use every day. Explore a service, choose a package and understand the numbers in a few clicks.</p>
+<div class="rf-actions"><a class="rf-primary" href="/services/demo-instagram-followers">Explore Instagram followers <span>↗</span></a><a class="rf-textlink" href="#services">Browse service categories ↓</a></div>
+<div class="rf-trust-line"><span>Clear package sizes</span><span>Custom quantity previews</span><span>No passwords requested</span></div>
+</div>
+<div class="rf-product-visual" aria-label="Illustrative Instagram service package preview">
+<div class="rf-shape-a"></div>
+<div class="rf-package">
+<div class="rf-package-top"><div class="rf-app-symbol">◎</div><div style="flex:1"><small>INSTAGRAM / SAMPLE PRODUCT</small><b>Followers package</b></div><span class="rf-package-tag">PREVIEW</span></div>
+<h2>Choose how many<br>followers to explore.</h2><p>Start with a popular package or customize the amount on the dedicated service page.</p>
+<div class="rf-package-choices"><a href="/services/demo-instagram-followers?qty=100"><b>100</b><small>followers</small></a><a href="/services/demo-instagram-followers?qty=500"><b>500</b><small>followers</small></a><a href="/services/demo-instagram-followers?qty=1000"><b>1,000</b><small>followers</small></a></div>
+<div class="rf-demo-notice"><strong>Interactive example.</strong> These are simulated packages, not available products. Supplier connections and payments are not active.</div>
+<a class="rf-package-action" href="/services/demo-instagram-followers">PREVIEW PACKAGE DETAILS ↗</a>
+</div><div class="rf-visual-tag">✳ YOUR PLATFORM. YOUR PACKAGE.</div></div>
+</div></section>
+<div class="rf-platforms"><div class="rf-wrap"><span class="rf-platforms-label">EXPLORE PLATFORMS</span><div class="rf-platform-list"><a href="/services/demo-instagram-followers"><b>◎</b>Instagram</a><a href="/services/demo-tiktok-followers"><b>♪</b>TikTok</a><a href="/services/demo-facebook-followers"><b>f</b>Facebook</a><a href="/services/demo-youtube-views"><b>▶</b>YouTube</a><a href="/services/demo-threads-followers"><b>@</b>Threads</a><a href="/services/demo-x-followers"><b>𝕏</b>X</a><a href="#platforms">See all ↗</a></div></div></div>
+<section id="services" class="rf-section"><div class="rf-wrap">
+<div class="rf-section-heading"><div><div class="rf-eyebrow">CHOOSE A SERVICE</div><h2>What are you <em>looking for?</em></h2></div><p>Start with a recognizable product, not a complicated dashboard.</p></div>
+<div class="rf-categories">
+<a class="rf-category rf-cat1" href="/services/demo-instagram-followers"><small>01 / INSTAGRAM</small><div class="rf-category-icon">◎</div><h3>Instagram<br>followers</h3><span class="rf-category-end">Explore sample packages <b>↗</b></span></a>
+<a class="rf-category rf-cat2" href="/services/demo-tiktok-followers"><small>02 / TIKTOK</small><div class="rf-category-icon">♪</div><h3>TikTok<br>followers</h3><span class="rf-category-end">Explore sample packages <b>↗</b></span></a>
+<a class="rf-category rf-cat3" href="/services/demo-youtube-views"><small>03 / YOUTUBE</small><div class="rf-category-icon">▶</div><h3>YouTube<br>views</h3><span class="rf-category-end">Explore sample packages <b>↗</b></span></a>
+<a class="rf-category rf-cat4" href="/services/demo-facebook-followers"><small>04 / FACEBOOK</small><div class="rf-category-icon">f</div><h3>Facebook<br>followers</h3><span class="rf-category-end">Explore sample packages <b>↗</b></span></a>
+</div>
+<div class="rf-disclosure"><strong>PRODUCT DEMONSTRATIONS, NOT LIVE OFFERS</strong><span>Package figures and prices in previews are synthetic. Only actual supplier-approved inventory will be offered commercially.</span><a href="/explore">Supplier catalog status ↗</a></div>
+</div></section>
+<section class="rf-section rf-allplatforms" id="platforms"><div class="rf-wrap">
+<div class="rf-section-heading"><div><div class="rf-eyebrow">16 SOCIAL NETWORKS</div><h2>Find your <em>platform.</em></h2></div><p>Choose any supported network to preview a service category.</p></div>
+<div class="rf-grid-networks" id="platformLinks"></div></div></section>
+<section class="rf-section rf-how"><div class="rf-wrap rf-how-grid">
+<div><div class="rf-eyebrow">THE BUYING EXPERIENCE</div><h2>Three choices.<br><em>No confusion.</em></h2><p>Graming inspired the simplicity: a clear product, an easy quantity selection, and a price next to the next step. SocialForge will preserve that approach while keeping unverified supplier inventory out of production.</p><a class="rf-primary" href="/services/demo-instagram-followers">Try a product page <span>↗</span></a></div>
+<div class="rf-steps"><div class="rf-step"><span>01</span><div><b>Choose your platform and service.</b><p>Browse by Instagram, TikTok, Facebook, YouTube and more.</p></div></div><div class="rf-step"><span>02</span><div><b>Select a package.</b><p>Pick a standard amount or type your own number, within the example limits.</p></div></div><div class="rf-step"><span>03</span><div><b>Review your quote.</b><p>See sample pricing transparently. Live orders stay disabled pending approval.</p></div></div></div>
+</div></section>
+<section class="rf-help"><div class="rf-wrap rf-help-grid"><div><div class="rf-eyebrow" style="color:#bd9cff">WE'RE HERE TO HELP</div><h2>Everything you need.<br><em>Nothing you don't.</em></h2><p>Clear answers, free utilities, and a straightforward view of what has—and hasn't—launched yet.</p></div><div class="rf-help-links"><a href="/tools">Free social media tools <span>↗</span></a><a href="/help">Frequently asked questions <span>↗</span></a><a href="/explore">Actual supplier inventory <span>↗</span></a></div></div></section>
 </main>
-<footer class="sf-footer"><div class="sf-section-wrap"><div class="sf-footer-top"><a class="sf-logo" href="/"><span class="sf-logo-mark">✳</span><span>SOCIAL<span class="sf-logo-accent">FORGE</span><sup>®</sup></span></a><p>One marketplace.<br>Every social network.</p><div class="sf-footer-links"><a href="/discover">Discover</a><a href="/explore">Supplier catalog</a><a href="/tools">Free tools</a><a href="/help">Help</a><a href="/cart">Demo cart</a><a href="/operations">Build status</a></div></div><div class="sf-footer-bottom"><span>© 2026 SOCIALFORGE. INDEPENDENT PLATFORM.</span><span>DEVELOPMENT PREVIEW · NO LIVE PRODUCTS OR PAYMENTS</span><a href="#top">BACK TO TOP ↑</a></div></div></footer>
+<footer class="rf-footer"><div class="rf-wrap"><div class="rf-footer-main"><div><a class="rf-logo" href="/"><span class="rf-logo-icon">✳</span><span>social<em>forge.</em></span></a><p>Social services made simple.</p></div><div class="rf-footer-nav"><a href="/services/demo-instagram-followers">Instagram</a><a href="/services/demo-tiktok-followers">TikTok</a><a href="/services/demo-facebook-followers">Facebook</a><a href="/explore">Real catalog</a><a href="/tools">Free tools</a><a href="/help">Support</a><a href="/operations">Build status</a></div></div><div class="rf-footer-bottom"><span>© 2026 SOCIALFORGE · INDEPENDENT PLATFORM</span><span>DEVELOPMENT PREVIEW · NO SALES, PAYMENTS OR DELIVERIES</span></div></div></footer>
 </body></html>
