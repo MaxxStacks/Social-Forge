@@ -82,735 +82,798 @@ export const platforms=[
 ];
 export const services=[
   {
-    "id": "instagram-creator-kit",
-    "platform": "instagram",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "instagram-shorts-pack",
+    "id": "instagram-reels-hooks",
     "platform": "instagram",
     "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
+    "name": "Instagram Reels hooks and captions",
+    "description": "10 video-opening hooks · 10 captions",
     "priceCents": 1299,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "10 video-opening hooks",
+      "10 captions",
+      "10 calls to action"
+    ],
+    "youProvide": [
+      "Audience and niche",
+      "Reel topics"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "instagram-brand-assets",
+    "id": "instagram-carousel-design",
     "platform": "instagram",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
+    "name": "Instagram carousel design bundle",
+    "description": "5 carousels with 5 slides each · 25 image exports",
     "priceCents": 2499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "5 carousels with 5 slides each",
+      "25 image exports",
+      "Editable layout templates"
+    ],
+    "youProvide": [
+      "Logo and brand colors",
+      "5 content topics"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "instagram-commerce-copy",
+    "id": "instagram-bio-refresh",
     "platform": "instagram",
-    "category": "commerce",
-    "name": "Commerce conversion pack",
-    "description": "Product copy, CTAs and customer-response templates",
+    "category": "audit",
+    "name": "Instagram profile refresh",
+    "description": "3 bio options · 6 highlight names",
     "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "3 bio options",
+      "6 highlight names",
+      "Profile improvement checklist"
+    ],
+    "youProvide": [
+      "Current profile URL",
+      "Business description"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "instagram-channel-audit",
-    "platform": "instagram",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "tiktok-creator-kit",
-    "platform": "tiktok",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "tiktok-shorts-pack",
+    "id": "tiktok-hooks",
     "platform": "tiktok",
     "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
+    "name": "TikTok video hook pack",
+    "description": "20 opening lines · 10 on-screen overlays",
+    "priceCents": 999,
+    "currency": "CAD",
+    "includes": [
+      "20 opening lines",
+      "10 on-screen overlays",
+      "5 calls to action"
+    ],
+    "youProvide": [
+      "Audience and niche",
+      "Video themes"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "tiktok-caption-pack",
+    "platform": "tiktok",
+    "category": "content",
+    "name": "TikTok captions and hashtag pack",
+    "description": "15 complete captions · 15 relevant hashtag groups",
     "priceCents": 1299,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "15 complete captions",
+      "15 relevant hashtag groups",
+      "Publishing checklist"
+    ],
+    "youProvide": [
+      "15 video topics",
+      "Desired tone"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "tiktok-brand-assets",
+    "id": "tiktok-cover-templates",
     "platform": "tiktok",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
+    "name": "TikTok video cover designs",
+    "description": "10 video cover layouts · 10 vertical image exports",
+    "priceCents": 1999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "10 video cover layouts",
+      "10 vertical image exports",
+      "Editable template"
+    ],
+    "youProvide": [
+      "Video titles",
+      "Brand colors"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "tiktok-commerce-copy",
-    "platform": "tiktok",
-    "category": "commerce",
-    "name": "Commerce conversion pack",
-    "description": "Product copy, CTAs and customer-response templates",
+    "id": "facebook-post-calendar",
+    "platform": "facebook",
+    "category": "content",
+    "name": "Facebook page post calendar",
+    "description": "14 post captions · 14 image prompts",
     "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "14 post captions",
+      "14 image prompts",
+      "Two-week publishing schedule"
+    ],
+    "youProvide": [
+      "Business description",
+      "Products or promotions"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "tiktok-channel-audit",
-    "platform": "tiktok",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "facebook-creator-kit",
-    "platform": "facebook",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "facebook-shorts-pack",
-    "platform": "facebook",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "facebook-brand-assets",
+    "id": "facebook-ad-creative",
     "platform": "facebook",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
+    "name": "Facebook advertising creative pack",
+    "description": "5 static ad concepts · 5 export-ready graphics",
+    "priceCents": 2999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "5 static ad concepts",
+      "5 export-ready graphics",
+      "10 headline options"
+    ],
+    "youProvide": [
+      "Offer details",
+      "Logo and images"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "facebook-commerce-copy",
+    "id": "facebook-page-review",
     "platform": "facebook",
-    "category": "commerce",
-    "name": "Commerce conversion pack",
-    "description": "Product copy, CTAs and customer-response templates",
+    "category": "audit",
+    "name": "Facebook Page optimization review",
+    "description": "Page About rewrite · Cover recommendations",
     "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "Page About rewrite",
+      "Cover recommendations",
+      "Conversion checklist"
+    ],
+    "youProvide": [
+      "Public Page URL",
+      "Desired customer action"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "facebook-channel-audit",
-    "platform": "facebook",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "youtube-creator-kit",
-    "platform": "youtube",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "youtube-shorts-pack",
-    "platform": "youtube",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "youtube-brand-assets",
+    "id": "youtube-thumbnails",
     "platform": "youtube",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
+    "name": "YouTube thumbnail design set",
+    "description": "3 thumbnail concepts · 3 high-resolution exports",
     "priceCents": 2499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "3 thumbnail concepts",
+      "3 high-resolution exports",
+      "3 title alternatives"
+    ],
+    "youProvide": [
+      "Three video topics",
+      "Channel assets"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "youtube-channel-audit",
+    "id": "youtube-shorts-scripts",
     "platform": "youtube",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "threads-creator-kit",
-    "platform": "threads",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "threads-shorts-pack",
-    "platform": "threads",
     "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "threads-brand-assets",
-    "platform": "threads",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "threads-channel-audit",
-    "platform": "threads",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "x-creator-kit",
-    "platform": "x",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "x-shorts-pack",
-    "platform": "x",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "x-brand-assets",
-    "platform": "x",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "x-channel-audit",
-    "platform": "x",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "snapchat-creator-kit",
-    "platform": "snapchat",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "snapchat-shorts-pack",
-    "platform": "snapchat",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "snapchat-brand-assets",
-    "platform": "snapchat",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "snapchat-channel-audit",
-    "platform": "snapchat",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
-    "priceCents": 999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "whatsapp-creator-kit",
-    "platform": "whatsapp",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "whatsapp-shorts-pack",
-    "platform": "whatsapp",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "whatsapp-brand-assets",
-    "platform": "whatsapp",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "whatsapp-commerce-copy",
-    "platform": "whatsapp",
-    "category": "commerce",
-    "name": "Commerce conversion pack",
-    "description": "Product copy, CTAs and customer-response templates",
+    "name": "YouTube Shorts scripts",
+    "description": "5 short-form video scripts · 5 opening hooks",
     "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "5 short-form video scripts",
+      "5 opening hooks",
+      "5 calls to action"
+    ],
+    "youProvide": [
+      "Channel niche",
+      "Five topics"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "whatsapp-channel-audit",
-    "platform": "whatsapp",
-    "category": "analytics",
-    "name": "Channel profile audit",
-    "description": "Structured profile review and practical improvement checklist",
+    "id": "youtube-metadata",
+    "platform": "youtube",
+    "category": "audit",
+    "name": "YouTube titles and descriptions",
+    "description": "5 video title groups · 5 descriptions",
+    "priceCents": 1499,
+    "currency": "CAD",
+    "includes": [
+      "5 video title groups",
+      "5 descriptions",
+      "Keyword theme outline"
+    ],
+    "youProvide": [
+      "Five video topics",
+      "Channel focus"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "threads-posts",
+    "platform": "threads",
+    "category": "content",
+    "name": "Threads post pack",
+    "description": "20 conversation posts · 10 discussion prompts",
     "priceCents": 999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "20 conversation posts",
+      "10 discussion prompts",
+      "5 reply starters"
+    ],
+    "youProvide": [
+      "Audience",
+      "Brand tone"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "telegram-creator-kit",
+    "id": "threads-profile",
+    "platform": "threads",
+    "category": "audit",
+    "name": "Threads profile refresh",
+    "description": "3 bio options · 7 post drafts",
+    "priceCents": 999,
+    "currency": "CAD",
+    "includes": [
+      "3 bio options",
+      "7 post drafts",
+      "Profile checklist"
+    ],
+    "youProvide": [
+      "Profile URL",
+      "Brand description"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "x-threads",
+    "platform": "x",
+    "category": "content",
+    "name": "X thread-writing pack",
+    "description": "3 threads of 6–8 posts · 3 opening hooks",
+    "priceCents": 1499,
+    "currency": "CAD",
+    "includes": [
+      "3 threads of 6–8 posts",
+      "3 opening hooks",
+      "3 calls to action"
+    ],
+    "youProvide": [
+      "Three themes",
+      "Audience"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "x-profile",
+    "platform": "x",
+    "category": "audit",
+    "name": "X profile optimization",
+    "description": "3 bio options · 3 pinned-post drafts",
+    "priceCents": 999,
+    "currency": "CAD",
+    "includes": [
+      "3 bio options",
+      "3 pinned-post drafts",
+      "Header messaging"
+    ],
+    "youProvide": [
+      "Profile URL",
+      "Professional description"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "snapchat-story-designs",
+    "platform": "snapchat",
+    "category": "design",
+    "name": "Snapchat Story graphics",
+    "description": "8 vertical Story images · 8 overlay texts",
+    "priceCents": 1999,
+    "currency": "CAD",
+    "includes": [
+      "8 vertical Story images",
+      "8 overlay texts",
+      "Editable design source"
+    ],
+    "youProvide": [
+      "Brand colors",
+      "Product images"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "snapchat-spotlight-hooks",
+    "platform": "snapchat",
+    "category": "video",
+    "name": "Snapchat Spotlight hook pack",
+    "description": "20 video opening ideas · 10 text overlays",
+    "priceCents": 999,
+    "currency": "CAD",
+    "includes": [
+      "20 video opening ideas",
+      "10 text overlays",
+      "10 calls to action"
+    ],
+    "youProvide": [
+      "Creator niche",
+      "Video themes"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "whatsapp-catalog-images",
+    "platform": "whatsapp",
+    "category": "design",
+    "name": "WhatsApp Business catalog graphics",
+    "description": "6 product-card images · 6 overlay labels",
+    "priceCents": 1999,
+    "currency": "CAD",
+    "includes": [
+      "6 product-card images",
+      "6 overlay labels",
+      "Matching brand template"
+    ],
+    "youProvide": [
+      "Six product photos",
+      "Prices and descriptions"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "whatsapp-quick-replies",
+    "platform": "whatsapp",
+    "category": "content",
+    "name": "WhatsApp customer reply pack",
+    "description": "30 editable replies · Greeting and away texts",
+    "priceCents": 1299,
+    "currency": "CAD",
+    "includes": [
+      "30 editable replies",
+      "Greeting and away texts",
+      "FAQ response examples"
+    ],
+    "youProvide": [
+      "Business hours",
+      "Common customer questions"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "telegram-posts",
     "platform": "telegram",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "telegram-shorts-pack",
-    "platform": "telegram",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
+    "category": "content",
+    "name": "Telegram channel content pack",
+    "description": "14 channel posts · 7 alternate headlines",
     "priceCents": 1299,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "14 channel posts",
+      "7 alternate headlines",
+      "Publishing guide"
+    ],
+    "youProvide": [
+      "Channel niche",
+      "Messages to convey"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "telegram-brand-assets",
+    "id": "telegram-launch-assets",
     "platform": "telegram",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "spotify-creator-kit",
-    "platform": "spotify",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
+    "name": "Telegram channel launch assets",
+    "description": "Channel description · 5 pinned-message options",
     "priceCents": 1999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "Channel description",
+      "5 pinned-message options",
+      "3 promo graphics"
+    ],
+    "youProvide": [
+      "Channel name",
+      "Colors and logo"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "spotify-shorts-pack",
-    "platform": "spotify",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "spotify-brand-assets",
+    "id": "spotify-release-graphics",
     "platform": "spotify",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
+    "name": "Spotify release promo graphics",
+    "description": "5 promotional images · Square and vertical formats",
     "priceCents": 2499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "5 promotional images",
+      "Square and vertical formats",
+      "Announcement captions"
+    ],
+    "youProvide": [
+      "Approved cover art",
+      "Artist and release info"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "discord-creator-kit",
-    "platform": "discord",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "discord-shorts-pack",
-    "platform": "discord",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "discord-brand-assets",
-    "platform": "discord",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "twitch-creator-kit",
-    "platform": "twitch",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "twitch-shorts-pack",
-    "platform": "twitch",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "twitch-brand-assets",
-    "platform": "twitch",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "pinterest-creator-kit",
-    "platform": "pinterest",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "pinterest-shorts-pack",
-    "platform": "pinterest",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "pinterest-brand-assets",
-    "platform": "pinterest",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "pinterest-commerce-copy",
-    "platform": "pinterest",
-    "category": "commerce",
-    "name": "Commerce conversion pack",
-    "description": "Product copy, CTAs and customer-response templates",
+    "id": "spotify-artist-bio",
+    "platform": "spotify",
+    "category": "content",
+    "name": "Spotify artist bio and pitch",
+    "description": "Short artist bio · Long artist bio",
     "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "Short artist bio",
+      "Long artist bio",
+      "Release pitch paragraph"
+    ],
+    "youProvide": [
+      "Artist story",
+      "Genre and release details"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "linkedin-creator-kit",
-    "platform": "linkedin",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
+    "id": "discord-welcome-assets",
+    "platform": "discord",
+    "category": "design",
+    "name": "Discord welcome and banner kit",
+    "description": "Welcome message · Rules template",
     "priceCents": 1999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "Welcome message",
+      "Rules template",
+      "2 banner designs"
+    ],
+    "youProvide": [
+      "Server theme",
+      "Community guidelines"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "linkedin-shorts-pack",
-    "platform": "linkedin",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
+    "id": "discord-announcements",
+    "platform": "discord",
+    "category": "content",
+    "name": "Discord announcement pack",
+    "description": "12 announcements · 6 event reminders",
+    "priceCents": 999,
+    "currency": "CAD",
+    "includes": [
+      "12 announcements",
+      "6 event reminders",
+      "Reusable message format"
+    ],
+    "youProvide": [
+      "Server subject",
+      "Event calendar"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "twitch-overlays",
+    "platform": "twitch",
+    "category": "design",
+    "name": "Twitch stream overlay kit",
+    "description": "Starting-soon graphic · Break screen",
+    "priceCents": 2999,
+    "currency": "CAD",
+    "includes": [
+      "Starting-soon graphic",
+      "Break screen",
+      "Stream-ending screen",
+      "Webcam border"
+    ],
+    "youProvide": [
+      "Channel name",
+      "Logo and colors"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "twitch-promo-copy",
+    "platform": "twitch",
+    "category": "content",
+    "name": "Twitch stream title and promo pack",
+    "description": "20 stream title ideas · 10 social posts",
     "priceCents": 1299,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "20 stream title ideas",
+      "10 social posts",
+      "Description rewrite"
+    ],
+    "youProvide": [
+      "Stream topics",
+      "Schedule"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "linkedin-brand-assets",
-    "platform": "linkedin",
+    "id": "pinterest-pin-graphics",
+    "platform": "pinterest",
     "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
+    "name": "Pinterest pin graphics bundle",
+    "description": "10 vertical pin layouts · 10 ready-to-post exports",
     "priceCents": 2499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "10 vertical pin layouts",
+      "10 ready-to-post exports",
+      "Editable template"
+    ],
+    "youProvide": [
+      "Ten links or topics",
+      "Brand assets"
+    ],
+    "deliveryFormat": "PNG / editable design source",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "reddit-creator-kit",
-    "platform": "reddit",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
+    "id": "pinterest-pin-copy",
+    "platform": "pinterest",
+    "category": "content",
+    "name": "Pinterest title and description pack",
+    "description": "20 pin titles · 20 descriptions",
+    "priceCents": 1299,
+    "currency": "CAD",
+    "includes": [
+      "20 pin titles",
+      "20 descriptions",
+      "Keyword grouping sheet"
+    ],
+    "youProvide": [
+      "Pin destination URLs",
+      "Topic list"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "linkedin-company-posts",
+    "platform": "linkedin",
+    "category": "content",
+    "name": "LinkedIn business post pack",
+    "description": "10 company posts · 10 opening hooks",
     "priceCents": 1999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "10 company posts",
+      "10 opening hooks",
+      "Two-week publishing plan"
+    ],
+    "youProvide": [
+      "Company services",
+      "Target buyer"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "reddit-shorts-pack",
+    "id": "linkedin-profile-review",
+    "platform": "linkedin",
+    "category": "audit",
+    "name": "LinkedIn professional profile refresh",
+    "description": "5 headline options · About-section rewrite",
+    "priceCents": 1499,
+    "currency": "CAD",
+    "includes": [
+      "5 headline options",
+      "About-section rewrite",
+      "Featured-section ideas"
+    ],
+    "youProvide": [
+      "Career background",
+      "Client focus"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
+    "delivery": "digital",
+    "status": "preview"
+  },
+  {
+    "id": "reddit-community-kit",
     "platform": "reddit",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
+    "category": "content",
+    "name": "Reddit community launch kit",
+    "description": "Community description · Rules draft",
+    "priceCents": 1499,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "Community description",
+      "Rules draft",
+      "5 pinned post drafts",
+      "7 discussion prompts"
+    ],
+    "youProvide": [
+      "Community topic",
+      "Moderation requirements"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "reddit-brand-assets",
+    "id": "reddit-discussion-drafts",
     "platform": "reddit",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
+    "category": "content",
+    "name": "Reddit discussion post drafts",
+    "description": "10 discussion drafts · 10 alternate titles",
+    "priceCents": 999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "10 discussion drafts",
+      "10 alternate titles",
+      "Community rules checklist"
+    ],
+    "youProvide": [
+      "Topics and relevant communities",
+      "Participation goals"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "bluesky-creator-kit",
+    "id": "bluesky-post-pack",
     "platform": "bluesky",
-    "category": "creator",
-    "name": "Creator launch kit",
-    "description": "Profile positioning, bio variants, content pillars and launch assets",
-    "priceCents": 1999,
+    "category": "content",
+    "name": "Bluesky post starter pack",
+    "description": "20 short posts · 10 reply ideas",
+    "priceCents": 999,
     "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "20 short posts",
+      "10 reply ideas",
+      "Seven-day posting outline"
+    ],
+    "youProvide": [
+      "Niche",
+      "Brand voice"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   },
   {
-    "id": "bluesky-shorts-pack",
+    "id": "bluesky-profile-kit",
     "platform": "bluesky",
-    "category": "video",
-    "name": "Short-form video kit",
-    "description": "Ready-to-use hooks, captions and publishing checklist",
-    "priceCents": 1299,
+    "category": "audit",
+    "name": "Bluesky profile refresh",
+    "description": "3 bio options · Introduction post",
+    "priceCents": 999,
     "currency": "CAD",
-    "provider": "internal-template",
-    "delivery": "digital",
-    "status": "preview"
-  },
-  {
-    "id": "bluesky-brand-assets",
-    "platform": "bluesky",
-    "category": "design",
-    "name": "Social brand asset pack",
-    "description": "Platform-ready visual briefs, avatar and cover specifications",
-    "priceCents": 2499,
-    "currency": "CAD",
-    "provider": "internal-template",
+    "includes": [
+      "3 bio options",
+      "Introduction post",
+      "Seven-day post plan"
+    ],
+    "youProvide": [
+      "Profile URL",
+      "Account goals"
+    ],
+    "deliveryFormat": "TXT / PDF",
+    "provider": "not-connected",
     "delivery": "digital",
     "status": "preview"
   }
 ];
+export const getService=id=>services.find(s=>s.id===id);
