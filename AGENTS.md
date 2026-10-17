@@ -1,4 +1,6 @@
-# Codex Instructions — SocialForge
+# Codex Instructions — SocialEngine
+
+Current direction: read `docs/SOCIALENGINE_DIRECTION.md` and `docs/SOCIALENGINE_RELEASE.md`. Brand is **SocialEngine**, dominant color **#275ddf**, intended domain **socialengine.cc**. Existing repository/infrastructure names are retained. Use `npm run verify:release` before publication; do not represent disabled funding or supplier fulfillment as live.
 
 ## Required context
 Read **[docs/CODEX_CONVERSATION_HANDOFF.md](docs/CODEX_CONVERSATION_HANDOFF.md)** before planning or editing this repository. It preserves the user's available conversation history, explicit product requirements, Graming benchmarking, architectural state, past errors, release gates and the latest verified deployment.

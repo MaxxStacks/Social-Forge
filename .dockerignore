@@ -1,0 +1,7 @@
+.git
+node_modules
+qa
+.env
+.env.*
+reports
+research_notes
