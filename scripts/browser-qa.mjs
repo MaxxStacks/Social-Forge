@@ -1,0 +1,61 @@
+import {chromium} from 'playwright';
+import {spawn} from 'node:child_process';
+import {mkdir,writeFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const origin='http://127.0.0.1:4137';
+await mkdir('qa',{recursive:true});
+const server=spawn(process.execPath,['src/server.js'],{env:{...process.env,HOST:'127.0.0.1',PORT:'4137'},stdio:['ignore','pipe','pipe']});
+let serverOutput='';server.stderr.on('data',d=>{serverOutput+=d.toString()});server.stdout.on('data',d=>{serverOutput+=d.toString()});
+let browser;
+const issues=[],checks=[];
+function expect(condition,message){assert.ok(condition,message);checks.push(message)}
+try{
+ let ready=false;
+ for(let i=0;i<50;i++){try{const r=await fetch(origin+'/api/health');if(r.ok){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,200))}
+ expect(ready,'Node server ready');
+ browser=await chromium.launch({headless:true});
+ const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+ page.on('pageerror',e=>issues.push('JS pageerror: '+e.message));
+ await page.goto(origin,{waitUntil:'networkidle'});
+ await page.locator('.sf-demo-card').first().waitFor();
+ expect(await page.locator('.sf-network-link').count()===16,'All 16 platforms visible');
+ expect(await page.locator('.sf-demo-card').count()===6,'Six initial demonstrator products shown');
+ expect(await page.locator('.sf-hero h1').isVisible(),'Premium homepage headline visible');
+ await page.screenshot({path:'qa/home-desktop.png',fullPage:true});
+ await page.goto(origin+'/discover?platform=instagram&goal=reach',{waitUntil:'networkidle'});
+ await page.locator('.sf-match-card').first().waitFor();
+ expect(await page.locator('.sf-match-card').count()===3,'Goal finder shows 3 sample options');
+ await page.locator('.sf-match-card').first().locator('button').click();
+ expect((await page.locator('#sfHeaderCartCount').textContent())==='1','Adding sample updates demo cart badge');
+ await page.goto(origin+'/cart',{waitUntil:'networkidle'});
+ await page.locator('.sf-cart-item').first().waitFor();
+ expect(await page.locator('.sf-cart-item').count()===1,'Demo cart persists across pages');
+ expect((await page.locator('#summaryTotal').textContent()).includes('$'),'Quote total displayed');
+ await page.screenshot({path:'qa/demo-cart.png',fullPage:true});
+ await page.locator('.sf-cart-item-right button').click();
+ await page.locator('.sf-cart-empty').waitFor();
+ expect(await page.locator('.sf-cart-item').count()===0,'Cart remove action works');
+ await page.goto(origin+'/services/demo-instagram-views',{waitUntil:'networkidle'});
+ await page.locator('#content').waitFor({state:'visible'});
+ expect(await page.locator('#demoAddToCart').isVisible(),'Sample detail page has demo-only cart button');
+ expect((await page.locator('#description').textContent()).includes('SIMULATION ONLY'),'Demo clearly labeled');
+ const live=await fetch(origin+'/api/catalog');
+ const liveData=await live.json();
+ expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
+ const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
+ await mobile.goto(origin,{waitUntil:'networkidle'});
+ await mobile.locator('.sf-demo-card').first().waitFor();
+ const overflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(overflow.scroll<=overflow.viewport+2,'Homepage fits 390px mobile viewport');
+ await mobile.screenshot({path:'qa/home-mobile.png',fullPage:true});
+ await mobile.goto(origin+'/discover',{waitUntil:'networkidle'});
+ await mobile.locator('.sf-match-card').first().waitFor();
+ const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
+ expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
+ await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
+ expect(issues.length===0,'No JavaScript runtime errors');
+ await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow},null,2));
+ console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));
+}catch(e){await writeFile('qa/results.json',JSON.stringify({failed:String(e),checks,issues,serverOutput},null,2));throw e}
+finally{if(browser)await browser.close();server.kill('SIGTERM')}
