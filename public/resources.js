@@ -1,5 +1,5 @@
 (function(){'use strict';
-const $=id=>document.getElementById(id),body=$('programBody'),page=location.pathname.split('/').filter(Boolean);
+const $=id=>document.getElementById(String(id).replace(/^#/,'')),body=$('programBody'),page=location.pathname.split('/').filter(Boolean);
 if(!['support','articles'].includes(page[0]))return;
 const articles=[
  {slug:'choosing-social-services',category:'BUYER EDUCATION',title:'A practical guide to choosing a social service',intro:'A clear view of provenance, platform policies and realistic product requirements.',sections:[
