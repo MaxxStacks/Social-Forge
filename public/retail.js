@@ -1,7 +1,7 @@
 (function(){'use strict';
 const $=id=>document.getElementById(id);
 const platforms=[['instagram','Instagram','◎','#e065ad'],['tiktok','TikTok','♪','#28222d'],['facebook','Facebook','f','#2076ee'],['youtube','YouTube','▶','#ff4242'],['threads','Threads','@','#2d2931'],['x','X','𝕏','#28222d'],['snapchat','Snapchat','◇','#e6c400'],['whatsapp','WhatsApp','◉','#29ba81'],['telegram','Telegram','➤','#2dabe2'],['spotify','Spotify','≋','#1dbb73'],['discord','Discord','◈','#7874f3'],['twitch','Twitch','◧','#9c53ea'],['pinterest','Pinterest','P','#e5455b'],['linkedin','LinkedIn','in','#257bc6'],['reddit','Reddit','●','#fe602a'],['bluesky','Bluesky','✳','#3891f8']];
-const cart=window.SocialForgeCart;if(cart){cart.subscribe(items=>{if($('retailCartCount'))$('retailCartCount').textContent=items.length})}
+const cart=window.SocialEngineCart;if(cart){cart.subscribe(items=>{if($('retailCartCount'))$('retailCartCount').textContent=items.length})}
 const nav=$('navPlatforms'),grid=$('platformGrid');
 for(const [id,name,icon,color] of platforms){
  const href='/shop/'+id+'/'+(id==='youtube'?'views':'followers');

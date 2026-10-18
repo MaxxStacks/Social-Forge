@@ -1,5 +1,5 @@
 (function(){'use strict';
-const byId=id=>document.getElementById(id),cart=window.SocialForgeCart;
+const byId=id=>document.getElementById(id),cart=window.SocialEngineCart;
 const money=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
 const samples=new Map();let expected=0;let promoCode='';let cartPreviewTotalCents=0;
 const quote=async(id,quantity)=>{const r=await fetch('/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:id,quantity})});const data=await r.json();if(!r.ok)throw Error(data.error||'Invalid');return data.quote};

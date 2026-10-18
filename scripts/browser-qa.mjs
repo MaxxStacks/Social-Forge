@@ -4,19 +4,25 @@ import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const origin='http://127.0.0.1:4137';
 await mkdir('qa',{recursive:true});
-const server=spawn(process.execPath,['src/server.js'],{env:{...process.env,HOST:'127.0.0.1',PORT:'4137'},stdio:['ignore','pipe','pipe']});
+const testEnv={...process.env,HOST:'127.0.0.1',PORT:'4137',SITE_URL:origin,NODE_ENV:'test',SEO_INDEXABLE:'false'};
+for(const name of ['DATABASE_URL','SMMWORLD_API_KEY','BOOSTERO_API_KEY','JAP_API_KEY'])delete testEnv[name];
+const server=spawn(process.execPath,['scripts/qa-server.mjs'],{env:testEnv,stdio:['ignore','pipe','pipe']});
 let serverOutput='';server.stderr.on('data',d=>{serverOutput+=d.toString()});server.stdout.on('data',d=>{serverOutput+=d.toString()});
 let browser;
 const issues=[],checks=[];
 function expect(condition,message){assert.ok(condition,message);checks.push(message)}
 try{
  let ready=false;
- for(let i=0;i<50;i++){try{const r=await fetch(origin+'/api/health');if(r.ok){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,200))}
+ for(let i=0;i<100;i++){try{const r=await fetch(origin+'/api/health');if(r.ok){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,200))}
  expect(ready,'Node server ready');
  browser=await chromium.launch({headless:true});
- const page=await browser.newPage({viewport:{width:1440,height:900},deviceScaleFactor:1});
+ const context=await browser.newContext({viewport:{width:1440,height:900},deviceScaleFactor:1});
+ const page=await context.newPage();
  page.on('pageerror',e=>issues.push('JS pageerror: '+e.message));
+ page.on('console',message=>{if(message.type()==='error'&&/Content Security Policy|Refused to/.test(message.text()))issues.push('CSP: '+message.text())});
  await page.goto(origin,{waitUntil:'networkidle'});
+ await page.evaluate(()=>document.fonts.ready);
+ expect(await page.evaluate(()=>[...document.fonts].some(font=>font.family==='Geist'&&font.status==='loaded')),'Self-hosted Geist font loads successfully');
  await page.locator('.service-tile').first().waitFor();
  expect(await page.locator('.platform-tile').count()===16,'All 16 platforms visible');
  expect(await page.locator('.service-tile').count()===3,'Three prominent shopping categories shown');
@@ -37,6 +43,7 @@ try{
  await page.locator('.package-tile').nth(2).click();
  await page.waitForFunction(()=>document.querySelector('#summaryTotal')?.textContent?.includes('$'));
  expect((await page.locator('#summaryTotal').textContent()).includes('$'),'Product price adjusts with selected quantity');
+ await page.waitForFunction(()=>document.getElementById('addDemoCart')?.disabled===false);
  expect(await page.locator('#addDemoCart').isEnabled(),'Product demo cart action enabled for valid quantity');
  await page.screenshot({path:'qa/followers-product-desktop.png',fullPage:true});
  await page.locator('#addDemoCart').click();
@@ -95,7 +102,7 @@ try{
  const live=await fetch(origin+'/api/catalog');
  const liveData=await live.json();
  expect(liveData.services.length===0,'Unconfigured live supplier catalog stays empty');
- const mobile=await browser.newPage({viewport:{width:390,height:844},deviceScaleFactor:1,isMobile:true,hasTouch:true});
+ const mobile=await context.newPage();await mobile.setViewportSize({width:390,height:844});
  mobile.on('pageerror',e=>issues.push('Mobile JS pageerror: '+e.message));
  await mobile.goto(origin,{waitUntil:'networkidle'});
  await mobile.locator('.service-tile').first().waitFor();
@@ -124,6 +131,60 @@ try{
  await page.locator('#hashInput').fill('Marketing, #Marketing, social media');
  await page.locator('#hashClean').click();
  expect((await page.locator('#hashOutput').textContent()).includes('#marketing'),'Hashtag cleaner works');
+
+ await page.goto(origin+'/account',{waitUntil:'networkidle'});
+ await page.locator('#authView').waitFor({state:'visible'});
+ await page.screenshot({path:'qa/account-signin-desktop.png',fullPage:true});
+ await page.getByRole('link',{name:'Browse services'}).click();
+ await page.waitForURL(origin+'/discover');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero')).backgroundColor)==='rgb(241, 245, 252)','Login Browse services path uses the SocialEngine surface palette');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero h1 em')).fontFamily.includes('Geist')),'Browse services heading uses modern sans typography');
+ await page.screenshot({path:'qa/discover-desktop.png',fullPage:true});
+ await page.goto(origin+'/explore',{waitUntil:'networkidle'});
+ await page.screenshot({path:'qa/catalog-desktop.png',fullPage:true});
+ await page.goto(origin+'/account',{waitUntil:'networkidle'});
+ await page.locator('#authView').waitFor({state:'visible'});
+ await page.locator('#registerTab').click();
+ await page.locator('#authName').fill('QA Customer');
+ await page.locator('#authEmail').fill('qa@example.test');
+ await page.locator('#authPassword').fill('A private QA passphrase 2026');
+ await page.locator('#authSubmit').click();
+ await page.locator('#dashboardView').waitFor({state:'visible'});
+ expect((await page.locator('#accountIdentity').textContent()).includes('qa@example.test'),'Customer can register and open a database-backed account');
+ await page.screenshot({path:'qa/account-desktop.png',fullPage:true});
+ await page.locator('[data-view="wallet"]').click();
+ await page.waitForFunction(()=>document.querySelector('#viewTitle')?.textContent==='Wallet & funding');
+ expect(await page.getByRole('button',{name:'Funding opens soon'}).isDisabled(),'Funding action stays disabled before provider setup');
+ await page.locator('[data-view="support"]').click();
+ await page.locator('#ticketSubject').fill('Question before launch');
+ await page.locator('#ticketMessage').fill('Can you clarify the planned service terms?');
+ await page.locator('#viewBody form button').click();
+ await page.waitForFunction(()=>document.querySelector('.ticket h3')?.textContent==='Question before launch');
+ await page.reload({waitUntil:'networkidle'});
+ await page.locator('.ticket h3').waitFor();
+ expect((await page.locator('.ticket h3').textContent())==='Question before launch','Support request survives reload in the server database');
+ await page.goto(origin+'/account/settings',{waitUntil:'networkidle'});
+ await page.locator('#profileName').fill('Updated QA Customer');
+ await page.getByRole('button',{name:'Save profile →'}).click();
+ await page.waitForFunction(()=>document.querySelector('#dashboardStatus')?.textContent==='Profile saved.');
+ expect((await page.locator('#accountIdentity').textContent()).includes('Updated QA'),'Profile update is persisted');
+ await mobile.goto(origin+'/account',{waitUntil:'networkidle'});
+ await mobile.locator('#dashboardView').waitFor({state:'visible'});
+ // Pages share an isolated browser context; the session is an HttpOnly cookie.
+ const accountOverflow=await mobile.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth);
+ expect(accountOverflow,'Customer dashboard fits mobile viewport');
+ await mobile.screenshot({path:'qa/account-mobile.png',fullPage:true});
+ await page.locator('#signOut').click();
+ await page.locator('#authView').waitFor({state:'visible'});
+ await page.reload({waitUntil:'networkidle'});
+ expect(await page.locator('#authView').isVisible(),'Signing out revokes the server session');
+ const crawlPaths=['/','/account','/account/orders','/account/wallet','/account/transactions','/account/support','/account/settings','/articles','/articles/choosing-social-services','/articles/transparent-bulk-pricing','/articles/content-planning-playbook','/volume','/rewards','/discounts','/affiliates','/support','/help','/tools','/explore','/discover','/cart','/track','/operations'];
+ for(const network of ['instagram','tiktok','facebook','youtube','threads','x','snapchat','whatsapp','telegram','spotify','discord','twitch','pinterest','linkedin','reddit','bluesky'])for(const type of ['followers','views','engagement'])crawlPaths.push('/shop/'+network+'/'+type);
+ const assets=new Set();
+ for(const route of crawlPaths){const response=await fetch(origin+route);expect(response.status===200,'Route responds: '+route);const html=await response.text();for(const match of html.matchAll(/(?:src|href)="(\/[^"#?]+\.(?:css|js|svg))"/g))assets.add(match[1]);expect(!/SocialForge|SOCIALFORGE/.test(html),'Current brand on route: '+route)}
+ for(const asset of assets)expect((await fetch(origin+asset)).status===200,'Referenced asset responds: '+asset);
+ expect((await fetch(origin+'/articles/not-a-real-article')).status===404,'Unknown article returns a real 404');
+ for(const route of ['/','/shop/instagram/followers','/account','/articles']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.evaluate(()=>[...document.querySelectorAll('*')].every(el=>!/(linear|radial|conic)-gradient/.test(getComputedStyle(el).backgroundImage))),'No computed gradients: '+route)}
  expect(issues.length===0,'No JavaScript runtime errors');
  await writeFile('qa/results.json',JSON.stringify({passed:checks,errors:issues,mobile:overflow,discoverMobile:discoverOverflow,shopMobile:shopOverflow},null,2));
  console.log(JSON.stringify({ok:true,checks:checks.length,issues,mobile:overflow,discoverMobile:discoverOverflow}));

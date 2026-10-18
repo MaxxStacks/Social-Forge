@@ -8,10 +8,13 @@ import {analyzeCatalog} from './quality.js';
 import {publicCatalog,publicService} from './supplier-catalog.js';
 import {demoServices,demoServiceById} from './demo-catalog.js';
 import {demoPrice} from './demo-pricing.js';
+import {handleAccounts} from './accounts.js';
+import {sendPage,articles,sitemap,indexable,siteOrigin} from './pages.js';
+import {database,migrate} from './database.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
-const files = new Map([['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/retail.css','retail.css'],['/flat-ui.css','flat-ui.css'],['/mega-menu.js','mega-menu.js'],['/programs.css','programs.css'],['/programs.js','programs.js'],['/resources.js','resources.js'],['/cart-flat.css','cart-flat.css'],['/retail.js','retail.js'],['/shop.css','shop.css'],['/shop.js','shop.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
-const contentTypes = {'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
+const files = new Map([['/polish.css','polish.css'],['/fonts/geist-latin-wght-normal.woff2','fonts/geist-latin-wght-normal.woff2'],['/fonts/geist-latin-ext-wght-normal.woff2','fonts/geist-latin-ext-wght-normal.woff2'],['/fonts/Geist-LICENSE.txt','fonts/Geist-LICENSE.txt'],['/layout.css','layout.css'],['/account.css','account.css'],['/account.js','account.js'],['/article-data.js','article-data.js'],['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/retail.css','retail.css'],['/flat-ui.css','flat-ui.css'],['/mega-menu.js','mega-menu.js'],['/programs.css','programs.css'],['/programs.js','programs.js'],['/resources.js','resources.js'],['/cart-flat.css','cart-flat.css'],['/retail.js','retail.js'],['/shop.css','shop.css'],['/shop.js','shop.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
+const contentTypes = {'.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
  res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});
@@ -19,7 +22,11 @@ function json(res,status,body) {
 }
 export async function handle(req,res){
  const pathname=new URL(req.url,'http://localhost').pathname;
- if(req.method==='GET'&&pathname==='/api/health') return json(res,200,{ok:true,service:'socialforge',mode:'preview',checkoutAvailable:false});
+ if(req.method==='GET'&&pathname==='/index.html'){res.writeHead(308,{Location:'/'});return res.end()}
+ if(req.method==='GET'&&pathname==='/robots.txt'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});return res.end(indexable()?'User-agent: *\nDisallow: /account\nDisallow: /api/\nDisallow: /cart\nDisallow: /shop/\nDisallow: /services/\nSitemap: '+siteOrigin()+'/sitemap.xml\n':'User-agent: *\nDisallow: /\n')}
+ if(req.method==='GET'&&pathname==='/sitemap.xml'){res.writeHead(200,{'Content-Type':'application/xml; charset=utf-8'});return res.end(sitemap())}
+ if(await handleAccounts(req,res,pathname))return;
+ if(req.method==='GET'&&pathname==='/api/health') return json(res,200,{ok:true,service:'socialengine',mode:'preview',checkoutAvailable:false});
  if(req.method==='GET'&&pathname==='/api/catalog'){
    const params=new URL(req.url,'http://localhost').searchParams;
    const platform=params.get('platform'), query=(params.get('q')||'').toLowerCase().trim().slice(0,120);
@@ -64,52 +71,37 @@ export async function handle(req,res){
   return json(res,403,{error:'Checkout is disabled in this public preview. No orders or charges are accepted.'});
  }
  if(pathname==='/api/admin/overview')return json(res,404,{error:'Unavailable in public preview'});
+
+ if(req.method==='GET'&&/^\/account(?:\/(?:orders(?:\/[a-f0-9-]{36})?|wallet|transactions|support|settings))?$/.test(pathname))return sendPage(res,'account.html',pathname);
  if(req.method==='GET'&&/^\/services\/[a-z0-9-]{1,90}\/?$/.test(pathname)){
- const id=pathname.split('/')[2];if(!(id.startsWith('demo-')?demoServiceById(id):await publicService(id)))return json(res,404,{error:'Service not found'});
- const body=await readFile(path.join(publicRoot,'service.html'));
- res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
-}
- if(req.method==='GET' && /^\/shop\/[a-z0-9-]+\/(followers|views|engagement)\/?$/.test(pathname)){
+  const id=pathname.split('/')[2];if(!(id.startsWith('demo-')?demoServiceById(id):await publicService(id)))return json(res,404,{error:'Service not found'});
+  return sendPage(res,'service.html',pathname);
+ }
+ if(req.method==='GET'&&/^\/shop\/[a-z0-9-]+\/(followers|views|engagement)\/?$/.test(pathname)){
   const [,shop,network,serviceType]=pathname.split('/');
-  if(!platforms.some(p=>p.id===network) || !['followers','views','engagement'].includes(serviceType))return json(res,404,{error:'Unsupported sample service'});
-  const body=await readFile(path.join(publicRoot,'shop.html'));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
-  return res.end(body);
+  if(!platforms.some(p=>p.id===network))return json(res,404,{error:'Service not found'});
+  return sendPage(res,'shop.html',pathname.replace(/\/$/,''));
  }
- if(req.method==='GET' && (['/volume','/discounts','/rewards','/affiliates','/account','/track','/articles','/support'].includes(pathname)||/^\/articles\/[a-z0-9-]{3,80}$/.test(pathname))){
-  const body=await readFile(path.join(publicRoot,'programs.html'));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});return res.end(body);
- }
- if(req.method==='GET' && ['/cart','/discover','/operations'].includes(pathname)){
-  const pageName=pathname==='/cart'?'cart.html':pathname==='/operations'?'operations.html':'discover.html';
-  const body=await readFile(path.join(publicRoot,pageName));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"});
-  return res.end(body);
- }
- if(req.method==='GET' && ['/explore','/tools','/help'].includes(pathname)){
-  const pageName=pathname.slice(1)+'.html';
-  const body=await readFile(path.join(publicRoot,pageName));
-  res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
-  return res.end(body);
- }
+ const programRoutes=['/volume','/discounts','/rewards','/affiliates','/track','/articles','/support'];
+ if(req.method==='GET'&&(programRoutes.includes(pathname)||articles.some(a=>pathname==='/articles/'+a.slug)))return sendPage(res,'programs.html',pathname);
+ const pageRoutes={'/cart':'cart.html','/discover':'discover.html','/operations':'operations.html','/explore':'explore.html','/tools':'tools.html','/help':'help.html'};
+ if(req.method==='GET'&&pageRoutes[pathname])return sendPage(res,pageRoutes[pathname],pathname);
  if(req.method==='GET'&&/^\/icons\/[a-z0-9-]{1,32}\.svg$/.test(pathname)){
-  const icon=pathname.slice('/icons/'.length);
-  const body=await readFile(path.join(publicRoot,'icons',icon)).catch(()=>null);
+  const body=await readFile(path.join(publicRoot,'icons',pathname.slice('/icons/'.length))).catch(()=>null);
   if(!body)return json(res,404,{error:'Icon unavailable'});
-  res.writeHead(200,{'Content-Type':'image/svg+xml','Cache-Control':'public, max-age=86400','X-Content-Type-Options':'nosniff',...headers});return res.end(body);
+  res.writeHead(200,{'Content-Type':'image/svg+xml','Cache-Control':'public, max-age=86400',...headers});return res.end(body);
  }
- if(req.method==='GET' && files.has(pathname)){
-  const name=files.get(pathname);
-  const type=contentTypes[path.extname(name)]||'application/octet-stream';
-  const body=await readFile(path.join(publicRoot,name));
-  res.writeHead(200,{'Content-Type':type,'Cache-Control':name==='index.html'?'no-cache':'public, max-age=3600',...headers,'Content-Security-Policy':"default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"});
-  return res.end(body);
+ if(req.method==='GET'&&files.has(pathname)){
+  const name=files.get(pathname);if(name.endsWith('.html'))return sendPage(res,name,pathname==='/'?'/':pathname);
+  const body=await readFile(path.join(publicRoot,name));res.writeHead(200,{'Content-Type':contentTypes[path.extname(name)]||'application/octet-stream','Cache-Control':'no-cache',...headers});return res.end(body);
  }
  return json(res,404,{error:'Not found'});
 }
+
 export function app(req,res){handle(req,res).catch(err=>{console.error('Request failed:',err.message);if(!res.headersSent)json(res,500,{error:'Internal server error'});else res.end();});}
 if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){
+ if(database())await migrate();
  const port=Number(process.env.PORT||3000);
  const host=process.env.HOST||'0.0.0.0';
- http.createServer(app).listen(port,host,()=>console.log(`SocialForge preview listening on ${host}:${port}`));
+ http.createServer(app).listen(port,host,()=>console.log(`SocialEngine preview listening on ${host}:${port}`));
 }

@@ -1,5 +1,22 @@
-# SocialForge
-Multi-platform social media service marketplace scaffold, deployed separately on Railway.
+# SocialEngine
+Social services storefront and private customer dashboard. Repository and existing Railway resource names remain `Social-Forge` / `socialforge-web`; the customer brand is SocialEngine. `socialengine.cc` is the intended domain, not yet connected.
+
+## Current implementation
+- Flat #275ddf storefront, platform navigation and shared footer; legacy demo carts remain usable.
+- PostgreSQL accounts with scrypt passwords, HttpOnly sessions, CSRF/origin checks, rate limits, session expiry and password rotation.
+- Private dashboard for orders, wallet, transactions, saved support requests and profile settings. No browser-local demo order becomes a real account order.
+- Transactional wallet ledger with unique references, row locking and append-only records. There is no public credit endpoint.
+- Server-rendered editorial pages, route-specific metadata, configured-origin canonicals and truthful Organization/WebSite/Breadcrumb/Article JSON-LD. Private routes and sample offers stay excluded from indexing.
+- **Payments, funding, real purchases, fulfillment, email recovery, staffed support and affiliate payouts are not live.**
+
+## Local setup and release verification
+Use Node 22 or later. Run `npm ci`, `npx playwright install chromium`, then `npm run verify:release`. This runs syntax/brand checks, unit/API/database tests and Chromium QA. QA uses an isolated embedded PostgreSQL engine with fixture accounts; it never uses production supplier keys or DATABASE_URL. Screenshots and results are written to ignored `qa/`.
+
+For a persistent account server, provision PostgreSQL and set `DATABASE_URL` privately. Set `SITE_URL` to the actual serving origin (for example `http://localhost:3000` locally or the existing Railway preview origin). Run `npm run migrate`, then `npm start`; startup also applies the idempotent schema under a migration lock. With no database the storefront serves normally and account access returns an explicit unavailable state. No in-memory production account fallback exists.
+
+Keep `SEO_INDEXABLE=false` during preview. Do not set it true as a substitute for connecting an owned domain and completing the launch review. The sitemap currently includes only the homepage, editorial content and useful public resources when explicitly enabled; demo offers are excluded.
+
+See [release and integration status](docs/SOCIALENGINE_RELEASE.md) for exact gates and remaining external setup.
 
 ## Source of truth
 **No fake product inventory.** The former creative kits and invented price lists have been removed. The storefront now reads supplier API responses. The API connectors are read-only and orders/payments are intentionally disabled. No live supplier accounts are configured in the repository. Products remain unreviewed and must be verified for actual fulfillment, platform-policy compliance, payment acceptance, and legality before they can be sold.

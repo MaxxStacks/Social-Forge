@@ -15,7 +15,7 @@ for(const [id,label,glyph] of networks){
  a.append(symbol,title);root.append(a);
 }
 const cart=document.getElementById('cartCount');
-if(window.SocialForgeCart){window.SocialForgeCart.subscribe(items=>{cart.textContent=items.length})}
+if(window.SocialEngineCart){window.SocialEngineCart.subscribe(items=>{cart.textContent=items.length})}
 const toggle=document.getElementById('menuToggle'),menu=document.getElementById('mobileMenu');
 toggle.addEventListener('click',()=>{menu.hidden=!menu.hidden;toggle.setAttribute('aria-expanded',String(!menu.hidden))});
 menu.addEventListener('click',e=>{if(e.target.closest('a')){menu.hidden=true;toggle.setAttribute('aria-expanded','false')}});

@@ -1,14 +1,25 @@
 {
-  "name": "socialforge",
+  "name": "socialengine",
   "version": "0.2.0",
   "private": true,
   "type": "module",
-  "description": "Independent multi-platform social services storefront preview",
+  "description": "SocialEngine storefront and private customer account",
   "scripts": {
     "start": "node src/server.js",
-    "test": "node --test"
+    "test": "node --test",
+    "check": "node scripts/check.mjs",
+    "test:browser": "node scripts/browser-qa.mjs",
+    "migrate": "node scripts/migrate.mjs",
+    "verify:release": "node scripts/verify-release.mjs"
   },
   "engines": {
     "node": ">=22"
+  },
+  "dependencies": {
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "playwright": "1.56.1"
   }
 }

@@ -2,6 +2,7 @@ name: Browser QA
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,8 +15,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Install browser test tools
-        run: npm install --no-save playwright@1.56.1
+      - name: Install locked dependencies
+        run: npm ci
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
       - name: Run interactive storefront checks
@@ -24,6 +25,6 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: socialforge-browser-qa
+          name: socialengine-browser-qa
           path: qa/
           retention-days: 7

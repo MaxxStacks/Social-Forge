@@ -1,0 +1,31 @@
+name: Release image
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verified-image:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build image after all release checks
+        run: docker build --progress=plain -t socialengine:${{ github.sha }} .
+      - name: Smoke test the runtime image
+        run: |
+          docker run -d --name socialengine -p 3000:3000 socialengine:${{ github.sha }}
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://localhost:3000/api/health > /dev/null; then
+              curl --fail --silent http://localhost:3000/account | grep -q dashboardView
+              exit 0
+            fi
+            sleep 1
+          done
+          docker logs socialengine
+          exit 1
+      - name: Stop smoke container
+        if: always()
+        run: docker rm -f socialengine || true

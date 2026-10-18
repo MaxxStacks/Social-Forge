@@ -4,7 +4,7 @@ const goalCategory={audience:'followers',reach:'views',engagement:'engagement'};
 const goalHeadline={audience:'Audience-building examples',reach:'Visibility and reach examples',engagement:'Interaction examples'};
 const money=n=>new Intl.NumberFormat('en-CA',{style:'currency',currency:'CAD'}).format(n);
 let services=[],platforms=[],goal='reach',platform='instagram',budget=25,sequence=0;
-const cart=window.SocialForgeCart;
+const cart=window.SocialEngineCart;
 function setNav(){cart?.subscribe(items=>{const el=byId('sfHeaderCartCount');if(el)el.textContent=items.length});
 byId('sfMenu')?.addEventListener('click',()=>{const n=byId('sfMobileNav');n.hidden=!n.hidden;byId('sfMenu').setAttribute('aria-expanded',String(!n.hidden))})}
 function opts(service){const list=[service.min,100,250,500,1000,2500,5000,10000,service.max].filter(n=>Number.isInteger(n)&&n>=service.min&&n<=service.max);return [...new Set(list)].sort((a,b)=>a-b)}
