@@ -21,6 +21,8 @@ try{
  page.on('pageerror',e=>issues.push('JS pageerror: '+e.message));
  page.on('console',message=>{if(message.type()==='error'&&/Content Security Policy|Refused to/.test(message.text()))issues.push('CSP: '+message.text())});
  await page.goto(origin,{waitUntil:'networkidle'});
+ await page.evaluate(()=>document.fonts.ready);
+ expect(await page.evaluate(()=>[...document.fonts].some(font=>font.family==='Geist'&&font.status==='loaded')),'Self-hosted Geist font loads successfully');
  await page.locator('.service-tile').first().waitFor();
  expect(await page.locator('.platform-tile').count()===16,'All 16 platforms visible');
  expect(await page.locator('.service-tile').count()===3,'Three prominent shopping categories shown');
@@ -133,6 +135,15 @@ try{
  await page.goto(origin+'/account',{waitUntil:'networkidle'});
  await page.locator('#authView').waitFor({state:'visible'});
  await page.screenshot({path:'qa/account-signin-desktop.png',fullPage:true});
+ await page.getByRole('link',{name:'Browse services'}).click();
+ await page.waitForURL(origin+'/discover');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero')).backgroundColor)==='rgb(241, 245, 252)','Login Browse services path uses the SocialEngine surface palette');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero h1 em')).fontFamily.includes('Geist')),'Browse services heading uses modern sans typography');
+ await page.screenshot({path:'qa/discover-desktop.png',fullPage:true});
+ await page.goto(origin+'/explore',{waitUntil:'networkidle'});
+ await page.screenshot({path:'qa/catalog-desktop.png',fullPage:true});
+ await page.goto(origin+'/account',{waitUntil:'networkidle'});
+ await page.locator('#authView').waitFor({state:'visible'});
  await page.locator('#registerTab').click();
  await page.locator('#authName').fill('QA Customer');
  await page.locator('#authEmail').fill('qa@example.test');
