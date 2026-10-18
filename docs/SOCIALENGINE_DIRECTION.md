@@ -13,3 +13,9 @@ Current owner direction recorded October 17, 2026. This document records product
 - Keep historical handoff intact as historical context. Apply new brand to runtime UI/metadata/email/receipts; preserve or migrate existing local demo storage deliberately. Domain cutover requires redirect, canonical, sitemap, email and cookie/session planning.
 
 Implementation sequence: release gate; brand/navigation/product templates; persistent auth/orders/wallet foundation; approved payment and supplier workflows; indexable production content and schema; retention and advanced automation.
+
+## Latest visual direction
+
+The owner rejected the restrained storefront as too flat. The expressive redesign uses #275ddf, Syne display typography, DM Sans body typography, original creator artwork, a narrative homepage, full desktop/mobile navigation and a richer footer. See SOCIALENGINE_CREATIVE_PASS.md.
+
+The owner selected a future 30% first-deposit bonus but explicitly prioritizes the visual experience now. Keep that promotion unpublished until funding is implemented and its conditions are approved.

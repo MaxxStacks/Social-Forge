@@ -11,10 +11,13 @@ import {demoPrice} from './demo-pricing.js';
 import {handleAccounts} from './accounts.js';
 import {sendPage,articles,sitemap,indexable,siteOrigin} from './pages.js';
 import {database,migrate} from './database.js';
+import {assistantAnswer} from './assistant.js';
 
 const publicRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../public');
 const files = new Map([['/polish.css','polish.css'],['/fonts/geist-latin-wght-normal.woff2','fonts/geist-latin-wght-normal.woff2'],['/fonts/geist-latin-ext-wght-normal.woff2','fonts/geist-latin-ext-wght-normal.woff2'],['/fonts/Geist-LICENSE.txt','fonts/Geist-LICENSE.txt'],['/layout.css','layout.css'],['/account.css','account.css'],['/account.js','account.js'],['/article-data.js','article-data.js'],['/','index.html'],['/index.html','index.html'],['/styles.css','styles.css'],['/app.js','app.js'],['/service.js','service.js'],['/service.css','service.css'],['/pages.css','pages.css'],['/explore.js','explore.js'],['/tools.js','tools.js'],['/experience.css','experience.css'],['/experience-interactive.css','experience-interactive.css'],['/cart-store.js','cart-store.js'],['/nav.js','nav.js'],['/discover.js','discover.js'],['/experience.js','experience.js'],['/demo-cart.js','demo-cart.js'],['/retail-v2.css','retail-v2.css'],['/retail-v2.js','retail-v2.js'],['/retail.css','retail.css'],['/flat-ui.css','flat-ui.css'],['/mega-menu.js','mega-menu.js'],['/programs.css','programs.css'],['/programs.js','programs.js'],['/resources.js','resources.js'],['/cart-flat.css','cart-flat.css'],['/retail.js','retail.js'],['/shop.css','shop.css'],['/shop.js','shop.js'],['/operations.css','operations.css'],['/operations.js','operations.js']]);
 const contentTypes = {'.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
+for(const name of ['socialengine.css','site-experience.js','creator.webp','fonts/syne-latin-wght-normal.woff2','fonts/dm-sans-latin-wght-normal.woff2'])files.set('/'+name,name);
+contentTypes['.webp']='image/webp';
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
  res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});
@@ -22,6 +25,11 @@ function json(res,status,body) {
 }
 export async function handle(req,res){
  const pathname=new URL(req.url,'http://localhost').pathname;
+ if(req.method==='GET'&&pathname==='/api/assistant'){
+  const q=new URL(req.url,'http://localhost').searchParams.get('q')||'';
+  if(q.length>500)return json(res,400,{error:'Question must be 500 characters or fewer'});
+  return json(res,200,{mode:'guided',...assistantAnswer(q)});
+ }
  if(req.method==='GET'&&pathname==='/index.html'){res.writeHead(308,{Location:'/'});return res.end()}
  if(req.method==='GET'&&pathname==='/robots.txt'){res.writeHead(200,{'Content-Type':'text/plain; charset=utf-8'});return res.end(indexable()?'User-agent: *\nDisallow: /account\nDisallow: /api/\nDisallow: /cart\nDisallow: /shop/\nDisallow: /services/\nSitemap: '+siteOrigin()+'/sitemap.xml\n':'User-agent: *\nDisallow: /\n')}
  if(req.method==='GET'&&pathname==='/sitemap.xml'){res.writeHead(200,{'Content-Type':'application/xml; charset=utf-8'});return res.end(sitemap())}

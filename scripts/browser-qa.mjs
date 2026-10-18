@@ -22,7 +22,7 @@ try{
  page.on('console',message=>{if(message.type()==='error'&&/Content Security Policy|Refused to/.test(message.text()))issues.push('CSP: '+message.text())});
  await page.goto(origin,{waitUntil:'networkidle'});
  await page.evaluate(()=>document.fonts.ready);
- expect(await page.evaluate(()=>[...document.fonts].some(font=>font.family==='Geist'&&font.status==='loaded')),'Self-hosted Geist font loads successfully');
+ expect(await page.evaluate(()=>[...document.fonts].some(font=>font.family==='Syne'&&font.status==='loaded')),'Self-hosted Syne font loads successfully');
  await page.locator('.service-tile').first().waitFor();
  expect(await page.locator('.platform-tile').count()===16,'All 16 platforms visible');
  expect(await page.locator('.service-tile').count()===3,'Three prominent shopping categories shown');
@@ -35,6 +35,34 @@ try{
  const flatHero=await page.evaluate(()=>getComputedStyle(document.querySelector('.retail-hero')).backgroundImage);
  expect(flatHero==='none','Retail homepage hero uses no gradient');
  expect(await page.locator('#retailQuickShop').isVisible(),'Product-first quick shop loads');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.retail-hero')).backgroundColor)==='rgb(39, 93, 223)','Hero uses the exact #275ddf brand color');
+ expect(await page.evaluate(()=>[...document.fonts].some(font=>font.family==='DM Sans'&&font.status==='loaded')),'Self-hosted DM Sans body font loads');
+ await page.getByRole('button',{name:'Explore TikTok',exact:true}).click();
+ expect(await page.locator('#heroPlatformName').textContent()==='TikTok','Hero platform selector changes the featured network');
+ expect(await page.locator('#heroPlatformLink').getAttribute('href')==='/shop/tiktok/followers','Hero selector links to the chosen platform');
+ await page.waitForFunction(()=>document.querySelector('#seQuote').textContent.includes('CAD'));
+ const quote1000=(await (await fetch(origin+'/api/demo/quote',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({serviceId:'demo-instagram-followers',quantity:1000})})).json()).quote;
+ expect((await page.locator('#seQuote').textContent()).includes((quote1000.totalCents/100).toFixed(2)),'Homepage sample price matches the server quote');
+ await page.locator('#seQuantity').selectOption('5000');
+ await page.waitForFunction(()=>document.querySelector('#seQuote').textContent.includes('36.90'));
+ expect((await page.locator('#seQuote').textContent()).includes('36.90'),'Homepage quantity selection recalculates volume savings');
+ await page.getByRole('button',{name:'Open navigation',exact:true}).click();
+ expect(await page.locator('dialog[open]').isVisible(),'Desktop hamburger opens a full modal navigation');
+ await page.locator('#megaSearch').fill('TikTok');
+ expect(await page.locator('.mega-network:visible').count()===1,'Full navigation filters platforms');
+ await page.keyboard.press('Escape');
+ await page.waitForFunction(()=>document.activeElement?.id==='retailMenuButton');
+ expect(await page.getByRole('button',{name:'Open navigation',exact:true}).evaluate(el=>el===document.activeElement),'Closing navigation restores keyboard focus');
+ await page.locator('.se-assistant-toggle').click();
+ await page.locator('[data-prompt="Can I add funds?"]').click();
+ await page.locator('.se-assistant-response').getByRole('link').waitFor();
+ expect((await page.locator('.se-assistant-response').textContent()).includes('not available yet'),'Assistant explains funding is unavailable');
+ await page.locator('#seAssistantQuestion').fill('YouTube views');
+ await page.getByRole('button',{name:'Ask Engine',exact:true}).last().click();
+ await page.locator('.se-assistant-response a[href="/shop/youtube/views"]').waitFor();
+ expect((await page.locator('.se-assistant-response').textContent()).includes('illustrative'),'Assistant labels sample packages truthfully');
+ await page.getByRole('button',{name:'Close assistant'}).click();
+
 
  await page.screenshot({path:'qa/home-desktop.png',fullPage:true});
  await page.goto(origin+'/shop/instagram/followers',{waitUntil:'networkidle'});
@@ -120,7 +148,7 @@ try{
  const discoverOverflow=await mobile.evaluate(()=>({scroll:document.documentElement.scrollWidth,viewport:window.innerWidth}));
  expect(discoverOverflow.scroll<=discoverOverflow.viewport+2,'Discovery fits mobile viewport');
  await mobile.screenshot({path:'qa/discover-mobile.png',fullPage:true});
- for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.sf-header').isVisible(),route+' displays the unified header')}
+ for(const route of ['/explore','/tools','/help']){await page.goto(origin+route,{waitUntil:'networkidle'});expect(await page.locator('.se-header').isVisible(),route+' displays the unified header')}
  await page.goto(origin+'/tools',{waitUntil:'networkidle'});
  await page.locator('#utmDestination').fill('https://example.com/offer');
  await page.locator('#utmSource').fill('instagram');
@@ -138,7 +166,7 @@ try{
  await page.getByRole('link',{name:'Browse services'}).click();
  await page.waitForURL(origin+'/discover');
  expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero')).backgroundColor)==='rgb(241, 245, 252)','Login Browse services path uses the SocialEngine surface palette');
- expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero h1 em')).fontFamily.includes('Geist')),'Browse services heading uses modern sans typography');
+ expect(await page.evaluate(()=>getComputedStyle(document.querySelector('.sf-discover-hero h1 em')).fontFamily.includes('Syne')),'Browse services heading uses modern sans typography');
  await page.screenshot({path:'qa/discover-desktop.png',fullPage:true});
  await page.goto(origin+'/explore',{waitUntil:'networkidle'});
  await page.screenshot({path:'qa/catalog-desktop.png',fullPage:true});
