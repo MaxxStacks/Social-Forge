@@ -26,3 +26,11 @@ Image prompt: Premium editorial advertising photo cutout for SocialEngine. An ad
 ## Verification
 
 Run npm run verify:release before publishing. The browser suite exercises menu search/dismissal/focus, hero selection, exact brand color, loaded fonts, quote agreement with the server, guided assistant answers and the existing account/cart flows. Screenshots require visual inspection as well as behavior checks. Verify the exact deployed commit before sharing a refreshed link.
+
+## Product-page refinement
+
+Owner feedback: the product pages still felt dated, particularly the quantity cards, typography and green accents. The product-specific stylesheet now uses DM Sans for controls and numerals, blue selection states, simpler inputs, quieter borders, compact summary rows and no decorative numbered step boxes. The existing shopping layout and behavior remain.
+
+Removed the green inline discount label and old savings color classes. Quantity tile prices now use the same server quote as the summary, including volume savings. Failed quotes show unavailable pricing and cannot be added to the cart. Selected quantity buttons expose aria-pressed. The mobile product assistant is compact to reduce overlap with shopping controls.
+
+Browser coverage includes green-text detection, quantity typography, server/tile price agreement and quote failure. Desktop Facebook, Instagram and TikTok and mobile Facebook renders were inspected before release.

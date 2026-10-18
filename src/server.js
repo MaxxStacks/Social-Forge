@@ -18,6 +18,7 @@ const files = new Map([['/polish.css','polish.css'],['/fonts/geist-latin-wght-no
 const contentTypes = {'.woff2':'font/woff2','.txt':'text/plain; charset=utf-8','.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8'};
 for(const name of ['socialengine.css','site-experience.js','creator.webp','fonts/syne-latin-wght-normal.woff2','fonts/dm-sans-latin-wght-normal.woff2'])files.set('/'+name,name);
 contentTypes['.webp']='image/webp';
+files.set('/product-refinement.css','product-refinement.css');
 const headers = {'X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY'};
 function json(res,status,body) {
  res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...headers});

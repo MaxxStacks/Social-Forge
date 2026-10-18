@@ -52,7 +52,7 @@ export async function sendPage(res,name,pathname,status=200){
    meta+='<script type="application/ld+json" nonce="'+nonce+'">'+JSON.stringify({'@context':'https://schema.org','@graph':graph}).replace(/</g,'\\u003c')+'</script>';
   }
  }
- html=html.replace('</head>',meta+'<link rel="preload" href="/fonts/syne-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/socialengine.css"><script defer src="/site-experience.js"></script></head>');
+ html=html.replace('</head>',meta+'<link rel="preload" href="/fonts/syne-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/fonts/dm-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/socialengine.css">'+(shop?'<link rel="stylesheet" href="/product-refinement.css">':'')+'<script defer src="/site-experience.js"></script></head>');
  res.writeHead(status,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Referrer-Policy':'strict-origin-when-cross-origin','X-Frame-Options':'DENY',...(!canIndex?{'X-Robots-Tag':'noindex, nofollow'}:{}),'Content-Security-Policy':`default-src 'self'; img-src 'self' data:; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; script-src 'self' 'nonce-${nonce}'; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'`});
  res.end(html);
 }

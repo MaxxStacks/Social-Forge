@@ -4,7 +4,7 @@
 <title>Social packages — SocialEngine</title>
 <link rel="stylesheet" href="/retail.css"><link rel="stylesheet" href="/shop.css"><link rel="stylesheet" href="/flat-ui.css">
 <script defer src="/cart-store.js"></script><script defer src="/shop.js"></script><script defer src="/mega-menu.js"></script>
-<link rel="stylesheet" href="/layout.css"><link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/polish.css"></head><body class="sf-retail">
+<link rel="stylesheet" href="/layout.css"><link rel="preload" href="/fonts/geist-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/polish.css"></head><body class="sf-retail se-product">
 <div class="top-note"><span class="top-note-dot"></span> INTERACTIVE PRODUCT PREVIEW <span class="top-note-break">·</span> No real sales, payments or delivery <a href="/explore">Real supplier catalog ↗</a></div>
 <header class="retail-header">
 <a href="/" class="retail-logo"><span class="logo-figure" aria-hidden="true">se</span>social<span>engine</span></a>
@@ -22,18 +22,18 @@
 <div class="product-intro"><div><div class="section-kicker"><span id="networkSymbol">◎</span> <span id="networkTag">INSTAGRAM</span> / SIMPLE PACKAGE SHOPPING</div><h1 id="productTitle">Instagram <em>Followers</em></h1><p id="productDescription">Select a package, adjust the amount, and see the example total instantly. Simple, beautiful, and easy to understand.</p><div class="product-perks"><span>✓ Custom quantities</span><span>✓ Instant sample calculation</span><span>✓ No password requested</span></div></div><div class="product-decor" aria-hidden="true"><span class="decor-ring"></span><div class="decor-social"><b id="decorGlyph">◎</b></div><span class="decor-stars">✦ ✳</span></div></div>
 <div class="product-shopping">
  <section class="product-selector" aria-label="Configure a package">
- <div class="selector-heading"><div><span class="flow-step">01</span><h2>Choose your package</h2><p>Pick an amount or enter your own. The total updates as you go.</p></div><span class="selector-mini">INTERACTIVE DEMO</span></div>
+ <div class="selector-heading"><div><span class="flow-step">01</span><h2>Choose your quantity</h2><p>Pick an amount or enter your own. The total updates as you go.</p></div><span class="selector-mini">SAMPLE PACKAGES</span></div>
  <div class="package-list" id="packageList"><div class="package-loading">Loading example package options…</div></div>
- <div class="custom-block"><label for="customQuantity">Or choose your own amount</label><div class="custom-input"><input id="customQuantity" type="number" inputmode="numeric" step="1" min="1" value="500"><span id="quantityUnit">followers</span></div><div class="field-hint" id="quantityHint">Enter an amount within the preview range.</div></div>
- <div class="selector-heading selector-second"><div><span class="flow-step">02</span><h2>Add your profile link</h2><p>This stays in your browser. The preview does not submit or store your link.</p></div></div>
+ <div class="custom-block"><label for="customQuantity">Need a different quantity?</label><div class="custom-input"><input id="customQuantity" type="number" inputmode="numeric" step="1" min="1" value="500"><span id="quantityUnit">followers</span></div><div class="field-hint" id="quantityHint">Enter an amount within the preview range.</div></div>
+ <div class="selector-heading selector-second"><div><span class="flow-step">02</span><h2>Add a public link</h2><p>This stays in your browser. The preview does not submit or store your link.</p></div></div>
  <label class="url-label" for="profileLink">Public social profile or post URL <small>OPTIONAL IN PREVIEW</small></label>
  <div class="url-wrapper"><span>↗</span><input id="profileLink" type="url" placeholder="https://www.instagram.com/yourprofile/" autocomplete="off"></div>
  <p class="selector-input-note">No password needed. Nothing is ordered or delivered in this demo.</p>
  </section>
  <aside class="checkout-aside" aria-label="Sample order summary">
  <div class="summary-card"><div class="summary-topline"><span>YOUR PACKAGE</span><span>SIMULATION ONLY</span></div><div class="summary-product"><span id="summarySymbol">◎</span><div><small id="summaryPlatform">INSTAGRAM</small><h3 id="summaryName">Followers</h3></div></div><div class="summary-line"><span>Selected quantity</span><strong id="summaryQuantity">500</strong></div><div class="summary-line"><span>Price per 1,000</span><strong id="summaryRate">—</strong></div><div class="summary-line"><span>Original sample price</span><strong id="summaryBase">—</strong></div>
-<div class="summary-line se-layout-633f4a00"><span>Volume savings</span><strong id="summaryVolume">—</strong></div>
-<div class="summary-line se-layout-633f4a00"><span>Coupon savings</span><strong id="summaryCoupon">—</strong></div>
+<div class="summary-line"><span>Volume savings</span><strong id="summaryVolume">—</strong></div>
+<div class="summary-line"><span>Coupon savings</span><strong id="summaryCoupon">—</strong></div>
 <div class="custom-block se-layout-8e48ce1c"><label for="promoCode">DEMO DISCOUNT CODE</label><div class="se-layout-9c40389b"><input class="se-layout-ade0fe06" id="promoCode" maxlength="20" placeholder="WELCOME10"><button class="se-layout-e4655c97" id="applyPromo" type="button">APPLY</button></div><small class="se-layout-aecbea8b">Try WELCOME10, SAVE5 or BULK15 (minimum $50 sample subtotal). Discounts are simulated.</small></div>
 <div class="summary-total"><span>YOUR SAMPLE TOTAL</span><b id="summaryTotal">—</b><small id="summaryCurrency">CAD · illustrative estimate</small></div>
  <div id="summaryFeedback" class="summary-feedback" role="status">Choose a sample amount to preview the total.</div>
